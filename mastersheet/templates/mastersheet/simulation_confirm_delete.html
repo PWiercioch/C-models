@@ -1,0 +1,11 @@
+{% extends 'mastersheet/main.html' %}
+{% block content %}
+
+<a href="{% url 'simulations' %}">Go back</a>
+<form method="POST">
+    {% csrf_token %}
+    <p>Are you sure? "{{simulation}}"</p>
+    <input type="submit" value="Delete"/>
+</form>
+
+{% endblock content %}
