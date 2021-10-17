@@ -1,53 +1,100 @@
 {% extends 'mastersheet/main.html' %}
 {% block content %}
 
-<h1>Simulation: {{simulation}}</h1>
+<div class="header-bar">
+    <h1>Simulation: {{simulation}}</h1>
+    <a href="{% url 'simulations' %}">&#8592; Back</a>
+</div>
+
+<div class="simulation-title">
+    <h3>Downforce</h3>
+</div>
+<div class="simulation-detail">
+    <div class="simulation-detail">
+         FW
+    </div>
+    <div class="simulation-detail">
+         RW
+    </div>
+    <div class="simulation-detail">
+         S
+    </div>
+    <div class="simulation-detail">
+         D
+    </div>
+    <div class="simulation-detail">
+          U
+    </div>
+    <div class="simulation-detail">
+          N
+    </div>
+</div>
+<div class="simulation-detail">
+    <div class="simulation-detail">
+         {{simulation.front_wing_df}}
+    </div>
+    <div class="simulation-detail">
+         {{simulation.rear_wing_df}}
+    </div>
+    <div class="simulation-detail">
+         {{simulation.sidepod_df}}
+    </div>
+    <div class="simulation-detail">
+         {{simulation.diffuser_df}}
+    </div>
+    <div class="simulation-detail">
+          {{simulation.undertray_df}}
+    </div>
+    <div class="simulation-detail">
+          {{simulation.nose_df}}
+    </div>
+</div>
+
 
 <hr>
-<h3>Downforce</h3>
+<div class="simulation-title">
+    <h3>Drag</h3>
+</div>
+<div class="simulation-detail">
+    <div class="simulation-detail">
+         FW
+    </div>
+    <div class="simulation-detail">
+         RW
+    </div>
+    <div class="simulation-detail">
+         S
+    </div>
+    <div class="simulation-detail">
+         D
+    </div>
+    <div class="simulation-detail">
+          U
+    </div>
+    <div class="simulation-detail">
+          N
+    </div>
+</div>
+<div class="simulation-detail">
+    <div class="simulation-detail">
+         {{simulation.front_wing_drag}}
+    </div>
+    <div class="simulation-detail">
+         {{simulation.rear_wing_drag}}
+    </div>
+    <div class="simulation-detail">
+         {{simulation.sidepod_drag}}
+    </div>
+    <div class="simulation-detail">
+         {{simulation.diffuser_drag}}
+    </div>
+    <div class="simulation-detail">
+          {{simulation.undertray_drag}}
+    </div>
+    <div class="simulation-detail">
+          {{simulation.nose_drag}}
+    </div>
+</div>
 
-<table>
-    <tr>
-        <th>FW</th>
-        <th>RW</th>
-        <th>S</th>
-        <th>D</th>
-        <th>U</th>
-        <th>N</th>
-    </tr>
-
-    <tr>
-        <td> {{simulation.front_wing_df}} </td>
-        <td> {{simulation.rear_wing_df}} </td>
-        <td> {{simulation.sidepod_df}} </td>
-        <td> {{simulation.diffuser_df}} </td>
-        <td> {{simulation.undertray_df}} </td>
-        <td> {{simulation.nose_df}} </td>
-
-</table>
-
-<hr>
-<h3>Drag</h3>
-
-<table>
-    <tr>
-        <th>FW</th>
-        <th>RW</th>
-        <th>S</th>
-        <th>D</th>
-        <th>U</th>
-        <th>N</th>
-    </tr>
-    <tr>
-        <td> {{simulation.front_wing_drag}} </td>
-        <td> {{simulation.rear_wing_drag}} </td>
-        <td> {{simulation.sidepod_drag}} </td>
-        <td> {{simulation.diffuser_drag}} </td>
-        <td> {{simulation.undertray_drag}} </td>
-        <td> {{simulation.nose_drag}} </td>
-
-</table>
-
-<a href="{% url 'simulations' %}">Go back</a>
 
 {% endblock content %}

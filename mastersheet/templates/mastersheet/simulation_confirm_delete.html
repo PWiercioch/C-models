@@ -1,11 +1,17 @@
 {% extends 'mastersheet/main.html' %}
 {% block content %}
 
-<a href="{% url 'simulations' %}">Go back</a>
-<form method="POST">
+<div class="header-bar">
+    <a href="{% url 'simulations' %}">&#8592; Back</a>
+</div>
+
+<div class="card-body">
+    <form method="POST">
     {% csrf_token %}
-    <p>Are you sure? "{{simulation}}"</p>
-    <input type="submit" value="Delete"/>
+    <p>Are you sure?</p>
+    <p>Delete {{simulation}}?</p>
+    <input class="button" type="submit" value="Delete"/>
 </form>
+</div>
 
 {% endblock content %}
