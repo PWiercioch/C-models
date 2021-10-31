@@ -2,6 +2,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.http import request
 
 from django.contrib.auth.views import LoginView
 
@@ -58,9 +59,11 @@ class SimulationUpdate(LoginRequiredMixin, UpdateView):
               'rear_wing_drag','sidepod_drag', 'diffuser_drag', 'undertray_drag', 'nose_drag']
     success_url = reverse_lazy('simulations')
 
-
 class SimulationCreate(LoginRequiredMixin, CreateView):
+
+    context_object_name = 'simulation'
     model = Simulation
+
     fields = ['chassis_name', 'description', 'front_wing_name', 'rear_wing_name',
               'sidepod_name', 'diffuser_name', 'undertray_name', 'nose_name', 'front_wing_df', 'rear_wing_df',
               'sidepod_df', 'diffuser_df', 'undertray_df', 'nose_df', 'front_wing_drag',
@@ -68,5 +71,7 @@ class SimulationCreate(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('simulations')
 
     def form_valid(self, form):
+        test = self.request.POST.get('Read')
+
         form.instance.user = self.request.user
         return super(SimulationCreate, self).form_valid(form)

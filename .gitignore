@@ -1,3 +1,6 @@
 .idea
 project_secrets.py
 db.sqlite3
+mastersheet/C_Y_07_Baseline_D.csv
+mastersheet/C_Y_07_Baseline_DF.csv
+mastersheet/C_Y_07_Baseline_O.csv

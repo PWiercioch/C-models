@@ -7,7 +7,9 @@
 </div>
 
 <div class="card-body">
+    <h2>{{test}}</h2>
     <form method="POST" action="">
+        <p><label><input type="checkbox" name="Read" value="test" id="read">Read from file</label></p>
         {% csrf_token %}
         {{form.as_p}}
         <input class="button" type="submit" value="Submit">
