@@ -8,6 +8,8 @@ def get_heading(input):
 def get_values(input):
     return input[-1].split(',')
 
-file = get_file('C_Y_07_Baseline_DF.csv')
-headings = get_heading(file)
-values = get_values(file)
+def main():
+    file = get_file('C_Y_07_Baseline_DF.csv')
+    headings = get_heading(file)
+
+    return get_values(file)

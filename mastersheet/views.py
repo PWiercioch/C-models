@@ -10,6 +10,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Simulation
 
+from . import handle_uploaded_file
+
 class CustomLoginView(LoginView):
     template_name = 'mastersheet/login.html'
     fields = '__all__'
@@ -71,7 +73,12 @@ class SimulationCreate(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('simulations')
 
     def form_valid(self, form):
-        test = self.request.POST.get('Read')
+        if self.request.POST.get('Read'):
+            vals = handle_uploaded_file.main()
+            post = form.instance
+
+            post.front_wing_df = float(vals[1])  # TODO move to handleuploaded file, add dictionary keys to overwrite form in a loop
+            form.instance = post
 
         form.instance.user = self.request.user
         return super(SimulationCreate, self).form_valid(form)
