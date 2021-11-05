@@ -74,10 +74,24 @@ class SimulationCreate(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         if self.request.POST.get('Read'):
-            vals = handle_uploaded_file.main()
+            df = handle_uploaded_file.main('C_Y_07_Baseline_DF.csv')
+            drag = handle_uploaded_file.main('C_Y_07_Baseline_D.csv')
             post = form.instance
 
-            post.front_wing_df = float(vals[1])  # TODO move to handleuploaded file, add dictionary keys to overwrite form in a loop
+            post.front_wing_df = round(float(df[3]),2)  # TODO move to handleuploaded file, add dictionary keys to overwrite form in a loop
+            post.rear_wing_df = round(float(df[4]),2)
+            post.sidepod_df = round(float(df[5]),2)
+            post.diffuser_df = round(float(df[2]),2)
+            post.undertray_df = round(float(df[1]),2)  # TODO - modify model - there is no undertray in simulation data
+            post.nose_df = round(float(df[6]),2)
+
+            post.front_wing_drag = round(float(drag[3]),2)
+            post.rear_wing_drag = round(float(drag[4]),2)
+            post.sidepod_drag = round(float(drag[5]),2)
+            post.diffuser_drag = round(float(drag[2]),2)
+            post.undertray_drag = round(float(drag[1]),2)
+            post.nose_drag = round(float(drag[6]),2)
+
             form.instance = post
 
         form.instance.user = self.request.user
