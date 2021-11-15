@@ -1,13 +1,33 @@
 {% extends 'mastersheet/main.html' %}
 {% block content %}
-
+{% load form_extras %}
 <div class="header-bar">
     <h3>Simulation</h3>
     <a href="{% url 'simulations' %}">&#8592; Back</a>
 </div>
 
+<script>
+    function changeColor(newColor)
+    {
+        var elem = document.getElementById("para1");
+        elem.style.color = newColor;
+    }
+
+    function hideContent()
+    {
+        var elem = document.getElementById("id_front_wing_df");
+        elem.value = 55.5;
+        elem.style.visibility = "hidden";
+    }
+</script>
+
+<p id="para1">Jakiś tekst</p>
+<button onclick="changeColor('blue');">niebieski</button>
+<button onclick="changeColor('#F2353B');">czerwony</button>
+
+<button onclick="hideContent();">Hide</button>
+
 <div class="card-body">
-    <h2>{{test}}</h2>
     <form method="POST" action="">
         {% csrf_token %}
         <!--- TODO in a loop!! --->
@@ -22,8 +42,8 @@
             </div>
             <div class="row">
                 <b></b>
-                <input type="radio" id="html" name="test2" value="yes">
-                <input type="radio" id="html" name="test2" value="no">
+                <a href="{{ request.get_full_path }}">Reload</a>
+                <p><label><input type="checkbox" name="Read" value="{% set_input_visibility as visibility_flag %}" id="read">Read from file</label></p>
             </div>
             <div class="row">
                 <b>Front wing name</b>
@@ -32,7 +52,9 @@
             </div>
             <div class="row">
                 {{form.front_wing_name}}
-                {% if test2 == yes %} <!--- TODO just use javascript dumbass --->
+                {{simulation.test_var}}
+
+                {% if visibility_flag %} <!--- TODO just use javascript dumbass --->
                     {{form.front_wing_df}}
                     {{form.front_wing_drag}}
                 {% endif %}
@@ -91,7 +113,6 @@
         <input class="button" type="submit" value="Submit">
     </form>
 </div>
-
 
 
 {% endblock content %}

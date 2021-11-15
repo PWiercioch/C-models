@@ -72,6 +72,12 @@ class SimulationCreate(LoginRequiredMixin, CreateView):
               'rear_wing_drag', 'sidepod_drag', 'diffuser_drag', 'undertray_drag', 'nose_drag']
     success_url = reverse_lazy('simulations')
 
+
+    def get_context_data(self, **kwargs):
+        context = super(SimulationCreate, self).get_context_data(**kwargs)
+        context["Visible2"] = False
+        return context
+
     def form_valid(self, form):
         if self.request.POST.get('Read'):
             df = handle_uploaded_file.main('C_Y_07_Baseline_DF.csv')
