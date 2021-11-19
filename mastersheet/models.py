@@ -18,19 +18,19 @@ class Simulation(models.Model):
     undertray_name = models.CharField(max_length=10)
     nose_name = models.CharField(max_length=10)
 
-    front_wing_df = models.FloatField()
-    rear_wing_df = models.FloatField()
-    sidepod_df = models.FloatField()
-    diffuser_df = models.FloatField()
-    undertray_df = models.FloatField()
-    nose_df = models.FloatField()
+    front_wing_df = models.FloatField(blank=True)
+    rear_wing_df = models.FloatField(blank=True)
+    sidepod_df = models.FloatField(blank=True)
+    diffuser_df = models.FloatField(blank=True)
+    undertray_df = models.FloatField(blank=True)
+    nose_df = models.FloatField(blank=True)
 
-    front_wing_drag = models.FloatField()
-    rear_wing_drag = models.FloatField()
-    sidepod_drag = models.FloatField()
-    diffuser_drag = models.FloatField()
-    undertray_drag = models.FloatField()
-    nose_drag = models.FloatField()
+    front_wing_drag = models.FloatField(blank=True)
+    rear_wing_drag = models.FloatField(blank=True)
+    sidepod_drag = models.FloatField(blank=True)
+    diffuser_drag = models.FloatField(blank=True)
+    undertray_drag = models.FloatField(blank=True)
+    nose_drag = models.FloatField(blank=True)
 
     def __str__(self):
         return self.chassis_name

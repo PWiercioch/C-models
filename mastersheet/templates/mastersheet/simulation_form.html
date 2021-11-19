@@ -6,32 +6,9 @@
     <a href="{% url 'simulations' %}">&#8592; Back</a>
 </div>
 
-<script>
-    function hideContent()
-    {
-        var div_df = document.getElementById("df");
-        var div_drag = document.getElementById("drag");
-
-
-
-        if (div_df.style.visibility == "visible") {
-            div_df.style.visibility = "hidden";
-            div_drag.style.visibility = "hidden";
-
-        }
-        else {
-            div_df.style.visibility = "visible";
-            div_drag.style.visibility = "visible";
-        }
-    }
-</script>
-
-<button onclick="hideContent();">Hide</button>
-
 <div class="card-body">
     <form method="POST" action="">
         {% csrf_token %}
-        <!--- TODO in a loop!! --->
         <div class="info_section">
             <div class="row">
                 <b>Chassis Name</b>
@@ -43,57 +20,78 @@
             </div>
             <div class="row">
                 <b></b>
-                <a href="{{ request.get_full_path }}">Reload</a>
-                <p><label><input type="checkbox" name="Read" value="{% set_input_visibility as visibility_flag %}" id="read">Read from file</label></p>
+                <p><label><input type="checkbox" id="read" name="Read" onclick="hideContent()">Read from file</label></p>
             </div>
         </div>
-        <div class="data_section">
-            <div class="column" id="names">
-                <b>Front wing name</b>
-                {{form.front_wing_name}}
-                <b>Rear wing name</b>
-                {{form.rear_wing_name}}
-                <b>Sidepod name</b>
-                {{form.sidepod_name}}
-                <b>Diffuser name</b>
-                {{form.diffuser_name}}
-                <b>Undertray name</b>
-                {{form.undertray_name}}
-                <b>Nose name</b>
-                {{form.nose_name}}
-            </div>
-            <div class="column" id="df">
-                <b>Front wing df</b>
-                {{form.front_wing_df}}
-                <b>Rear wing df</b>
-                {{form.rear_wing_df}}
-                <b>Sidepod df</b>
-                {{form.sidepod_df}}
-                <b>Diffuser df</b>
-                {{form.diffuser_df}}
-                <b>Undertray df</b>
-                {{form.undertray_df}}
-                <b>Nose df</b>
-                {{form.nose_df}}
-            </div>
-            <div class="column" id="drag">
-                <b>Front wing drag</b>
-                {{form.front_wing_drag}}
-                <b>Rear wing drag</b>
-                {{form.rear_wing_drag}}
-                <b>Sidepod drag</b>
-                {{form.sidepod_drag}}
-                <b>Diffuser drag</b>
-                {{form.diffuser_drag}}
-                <b>Undertray drag</b>
-                {{form.undertray_drag}}
-                <b>Nose drag</b>
-                {{form.nose_drag}}
-            </div>
+        <div class="data_section" id="columns">
         </div>
         <input class="button" type="submit" value="Submit">
     </form>
 </div>
+
+<script>
+    var read_file = document.getElementById("read");
+    var columns = document.getElementById("columns");
+
+    const names_div = '<div class="column" id="names">' +
+                '<b>Front wing name</b>' +
+                '{{form.front_wing_name}}' +
+                '<b>Rear wing name</b>' +
+                '{{form.rear_wing_name}}' +
+                '<b>Sidepod name</b>' +
+                '{{form.sidepod_name}}' +
+                '<b>Diffuser name</b>' +
+                '{{form.diffuser_name}}' +
+                '<b>Undertray name</b>' +
+                '{{form.undertray_name}}' +
+                '<b>Nose name</b>' +
+                '{{form.nose_name}}' +
+            '</div>'
+
+        const df_div = '<div class="column" id="df">' +
+                '<b>Front wing df</b>' +
+                '{{form.front_wing_df}}' +
+                '<b>Rear wing df</b>' +
+                '{{form.rear_wing_df}}' +
+                '<b>Sidepod df</b>' +
+                '{{form.sidepod_df}}' +
+                '<b>Diffuser df</b>' +
+                '{{form.diffuser_df}}' +
+                '<b>Undertray df</b>' +
+                '{{form.undertray_df}}' +
+                '<b>Nose df</b>' +
+                '{{form.nose_df}}' +
+            '</div>';
+
+        const drag_div =  '<div class="column" id="drag">' +
+                '<b>Front wing drag</b>' +
+                '{{form.front_wing_drag}}' +
+                '<b>Rear wing drag</b>' +
+                '{{form.rear_wing_drag}}' +
+                '<b>Sidepod drag</b>' +
+                '{{form.sidepod_drag}}' +
+                '<b>Diffuser drag</b>' +
+                '{{form.diffuser_drag}}' +
+                '<b>Undertray drag</b>' +
+                '{{form.undertray_drag}}' +
+                '<b>Nose drag</b>' +
+                '{{form.nose_drag}}' +
+            '</div>'
+
+        columns.innerHTML = names_div + df_div + drag_div;
+
+    function hideContent()
+    {
+        if (read_file.checked) {
+            columns.innerHTML = names_div;
+            hidden = true;
+        }
+        else {
+            columns.innerHTML = names_div + df_div + drag_div;
+            hidden = false;
+        }
+    }
+</script>
 
 
 {% endblock content %}
