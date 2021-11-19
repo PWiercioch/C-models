@@ -80,8 +80,8 @@ class SimulationCreate(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         if self.request.POST.get('Read'):
-            df = handle_uploaded_file.main('C_Y_07_Baseline_DF.csv')
-            drag = handle_uploaded_file.main('C_Y_07_Baseline_D.csv')
+            df = handle_uploaded_file.main(self.request.FILES["df"])
+            drag = handle_uploaded_file.main(self.request.FILES["drag"])
             post = form.instance
 
             post.front_wing_df = round(float(df[3]),2)  # TODO move to handleuploaded file, add dictionary keys to overwrite form in a loop

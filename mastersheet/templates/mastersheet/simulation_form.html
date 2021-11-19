@@ -7,7 +7,7 @@
 </div>
 
 <div class="card-body">
-    <form method="POST" action="">
+    <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="info_section">
             <div class="row">
@@ -22,6 +22,10 @@
                 <b></b>
                 <p><label><input type="checkbox" id="read" name="Read" onclick="hideContent()">Read from file</label></p>
             </div>
+            <div id="files">
+                <b>File with downforce: <input type="file" name="df"></b>
+                <b>File with drag: <input type="file" name="drag"></b>
+            </div>
         </div>
         <div class="data_section" id="columns">
         </div>
@@ -32,6 +36,7 @@
 <script>
     var read_file = document.getElementById("read");
     var columns = document.getElementById("columns");
+    var files = document.getElementById("files");
 
     const names_div = '<div class="column" id="names">' +
                 '<b>Front wing name</b>' +
@@ -79,16 +84,19 @@
             '</div>'
 
         columns.innerHTML = names_div + df_div + drag_div;
+        files.style.visibility = "hidden";
 
     function hideContent()
     {
         if (read_file.checked) {
             columns.innerHTML = names_div;
             hidden = true;
+            files.style.visibility = "visible";
         }
         else {
             columns.innerHTML = names_div + df_div + drag_div;
             hidden = false;
+            files.style.visibility = "hidden";
         }
     }
 </script>

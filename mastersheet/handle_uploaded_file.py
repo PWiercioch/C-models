@@ -1,6 +1,6 @@
 def get_file(input):
-    file = open(input)
-    return file.readlines()
+    file = input.read().decode('utf-8')
+    return file.splitlines()
 
 def get_heading(input):
     return input[0].split(',')
