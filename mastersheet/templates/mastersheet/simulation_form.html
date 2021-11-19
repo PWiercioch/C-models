@@ -7,23 +7,25 @@
 </div>
 
 <script>
-    function changeColor(newColor)
-    {
-        var elem = document.getElementById("para1");
-        elem.style.color = newColor;
-    }
-
     function hideContent()
     {
         var elem = document.getElementById("id_front_wing_df");
-        elem.value = 55.5;
-        elem.style.visibility = "hidden";
+        var div = document.getElementById("fw_div");
+
+        if (elem.style.visibility == "visible") {
+            elem.value = 0;
+            elem.style.visibility = "hidden";
+            div.innerHTML = "<b>Front wing name</b>";
+        }
+        else {
+            elem.value = null;
+            elem.style.visibility = "visible";
+            div.innerHTML = "<b>Front wing name</b>\
+                             <b>Front wing df</b>\
+                             <b>Front wing drag</b>";
+        }
     }
 </script>
-
-<p id="para1">Jakiś tekst</p>
-<button onclick="changeColor('blue');">niebieski</button>
-<button onclick="changeColor('#F2353B');">czerwony</button>
 
 <button onclick="hideContent();">Hide</button>
 
@@ -45,19 +47,15 @@
                 <a href="{{ request.get_full_path }}">Reload</a>
                 <p><label><input type="checkbox" name="Read" value="{% set_input_visibility as visibility_flag %}" id="read">Read from file</label></p>
             </div>
-            <div class="row">
+            <div class="row" id="fw_div">
                 <b>Front wing name</b>
                 <b>Front wing df</b>
                 <b>Front wing drag</b>
             </div>
             <div class="row">
                 {{form.front_wing_name}}
-                {{simulation.test_var}}
-
-                {% if visibility_flag %} <!--- TODO just use javascript dumbass --->
-                    {{form.front_wing_df}}
-                    {{form.front_wing_drag}}
-                {% endif %}
+                {{form.front_wing_df}}
+                {{form.front_wing_drag}}
             </div>
             <div class="row">
                 <b>Rear wing name</b>
