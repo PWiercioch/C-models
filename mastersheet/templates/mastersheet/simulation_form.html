@@ -9,20 +9,19 @@
 <script>
     function hideContent()
     {
-        var elem = document.getElementById("id_front_wing_df");
-        var div = document.getElementById("fw_div");
+        var div_df = document.getElementById("df");
+        var div_drag = document.getElementById("drag");
 
-        if (elem.style.visibility == "visible") {
-            elem.value = 0;
-            elem.style.visibility = "hidden";
-            div.innerHTML = "<b>Front wing name</b>";
+
+
+        if (div_df.style.visibility == "visible") {
+            div_df.style.visibility = "hidden";
+            div_drag.style.visibility = "hidden";
+
         }
         else {
-            elem.value = null;
-            elem.style.visibility = "visible";
-            div.innerHTML = "<b>Front wing name</b>\
-                             <b>Front wing df</b>\
-                             <b>Front wing drag</b>";
+            div_df.style.visibility = "visible";
+            div_drag.style.visibility = "visible";
         }
     }
 </script>
@@ -33,7 +32,7 @@
     <form method="POST" action="">
         {% csrf_token %}
         <!--- TODO in a loop!! --->
-        <div class="stacked">
+        <div class="info_section">
             <div class="row">
                 <b>Chassis Name</b>
                 {{form.chassis_name}}
@@ -47,64 +46,48 @@
                 <a href="{{ request.get_full_path }}">Reload</a>
                 <p><label><input type="checkbox" name="Read" value="{% set_input_visibility as visibility_flag %}" id="read">Read from file</label></p>
             </div>
-            <div class="row" id="fw_div">
+        </div>
+        <div class="data_section">
+            <div class="column" id="names">
                 <b>Front wing name</b>
-                <b>Front wing df</b>
-                <b>Front wing drag</b>
-            </div>
-            <div class="row">
                 {{form.front_wing_name}}
-                {{form.front_wing_df}}
-                {{form.front_wing_drag}}
-            </div>
-            <div class="row">
                 <b>Rear wing name</b>
-                <b>Rear wing df</b>
-                <b>Rear wing drag</b>
-            </div>
-            <div class="row">
                 {{form.rear_wing_name}}
-                {{form.rear_wing_df}}
-                {{form.rear_wing_drag}}
-            </div>
-            <div class="row">
                 <b>Sidepod name</b>
-                <b>Sidepod df</b>
-                <b>Sidepod drag</b>
-            </div>
-            <div class="row">
                 {{form.sidepod_name}}
-                {{form.sidepod_df}}
-                {{form.sidepod_drag}}
-            </div>
-            <div class="row">
                 <b>Diffuser name</b>
-                <b>Diffuser df</b>
-                <b>Diffuser drag</b>
-            </div>
-            <div class="row">
                 {{form.diffuser_name}}
-                {{form.diffuser_df}}
-                {{form.diffuser_drag}}
-            </div>
-            <div class="row">
                 <b>Undertray name</b>
-                <b>Undertray df</b>
-                <b>Undertray drag</b>
-            </div>
-            <div class="row">
                 {{form.undertray_name}}
-                {{form.undertray_df}}
-                {{form.undertray_drag}}
-            </div>
-            <div class="row">
                 <b>Nose name</b>
-                <b>Nose df</b>
-                <b>Nose drag</b>
-            </div>
-            <div class="row">
                 {{form.nose_name}}
+            </div>
+            <div class="column" id="df">
+                <b>Front wing df</b>
+                {{form.front_wing_df}}
+                <b>Rear wing df</b>
+                {{form.rear_wing_df}}
+                <b>Sidepod df</b>
+                {{form.sidepod_df}}
+                <b>Diffuser df</b>
+                {{form.diffuser_df}}
+                <b>Undertray df</b>
+                {{form.undertray_df}}
+                <b>Nose df</b>
                 {{form.nose_df}}
+            </div>
+            <div class="column" id="drag">
+                <b>Front wing drag</b>
+                {{form.front_wing_drag}}
+                <b>Rear wing drag</b>
+                {{form.rear_wing_drag}}
+                <b>Sidepod drag</b>
+                {{form.sidepod_drag}}
+                <b>Diffuser drag</b>
+                {{form.diffuser_drag}}
+                <b>Undertray drag</b>
+                {{form.undertray_drag}}
+                <b>Nose drag</b>
                 {{form.nose_drag}}
             </div>
         </div>
