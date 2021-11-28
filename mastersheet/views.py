@@ -1,6 +1,6 @@
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
 from django.http import request
 
@@ -8,9 +8,10 @@ from django.contrib.auth.views import LoginView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Simulation
+from .models import Simulation, FrontWing
 
 from . import handle_uploaded_file
+from . import forms
 
 class CustomLoginView(LoginView):
     template_name = 'mastersheet/login.html'
@@ -61,16 +62,32 @@ class SimulationUpdate(LoginRequiredMixin, UpdateView):
               'rear_wing_drag','sidepod_drag', 'diffuser_drag', 'undertray_drag', 'nose_drag']
     success_url = reverse_lazy('simulations')
 
-class SimulationCreate(LoginRequiredMixin, CreateView):
+
+class SimulationCreate(FormView):
+    context_object_name = 'simulation'
+
+    form_class = forms.SimulationMultiForm
+
+    success_url = reverse_lazy('simulations')
+
+    template_name = 'mastersheet/simulation_form.html'
+
+
+class SimulationCreate_2(LoginRequiredMixin, CreateView):
 
     context_object_name = 'simulation'
     model = Simulation
 
+    fields = ['name', 'front_wing']
+
+    '''
     fields = ['chassis_name', 'description', 'front_wing_name', 'rear_wing_name',
               'sidepod_name', 'diffuser_name', 'undertray_name', 'nose_name', 'front_wing_df', 'rear_wing_df',
               'sidepod_df', 'diffuser_df', 'undertray_df', 'nose_df', 'front_wing_drag',
               'rear_wing_drag', 'sidepod_drag', 'diffuser_drag', 'undertray_drag', 'nose_drag']
+    '''
     success_url = reverse_lazy('simulations')
+
 
 
     def get_context_data(self, **kwargs):
@@ -79,6 +96,7 @@ class SimulationCreate(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
+        '''
         if self.request.POST.get('Read'):
             df = handle_uploaded_file.main(self.request.FILES["df"])
             drag = handle_uploaded_file.main(self.request.FILES["drag"])
@@ -99,6 +117,7 @@ class SimulationCreate(LoginRequiredMixin, CreateView):
             post.nose_drag = round(float(drag[6]),2)
 
             form.instance = post
+        '''
 
         form.instance.user = self.request.user
         return super(SimulationCreate, self).form_valid(form)

@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mastersheet.apps.MastersheetConfig'
+    'mastersheet.apps.MastersheetConfig',
+    'betterforms'
 ]
 
 MIDDLEWARE = [

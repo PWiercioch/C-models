@@ -1,11 +1,15 @@
 {% extends 'mastersheet/main.html' %}
 {% block content %}
-{% load form_extras %}
 <div class="header-bar">
     <h3>Simulation</h3>
     <a href="{% url 'simulations' %}">&#8592; Back</a>
 </div>
 
+<form method="POST" action="" enctype="multipart/form-data">
+    {{ form.simulation.name }}
+
+</form>
+<!--
 <div class="card-body">
     <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
@@ -100,6 +104,6 @@
         }
     }
 </script>
-
+-->
 
 {% endblock content %}
