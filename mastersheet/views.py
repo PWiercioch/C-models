@@ -8,7 +8,7 @@ from django.contrib.auth.views import LoginView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Simulation, FrontWing
+from .models import Simulation, SimulationMeta
 
 from . import handle_uploaded_file
 from . import forms
@@ -21,8 +21,12 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         return reverse_lazy('simulations')
 
-
 class SimulationList(LoginRequiredMixin, ListView):
+    template_name = 'mastersheet/simulation_list.html'
+    model = Simulation
+
+
+class SimulationList2(LoginRequiredMixin, ListView):
     model = Simulation
     context_object_name = 'simulations'
 

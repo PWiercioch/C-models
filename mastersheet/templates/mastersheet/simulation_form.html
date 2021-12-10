@@ -5,22 +5,18 @@
     <a href="{% url 'simulations' %}">&#8592; Back</a>
 </div>
 
-<form method="POST" action="" enctype="multipart/form-data">
-    {{ form.simulation.name }}
-
-</form>
-<!--
 <div class="card-body">
-    <form method="POST" action="" enctype="multipart/form-data">
+<form method="POST" action="" enctype="multipart/form-data">
+        <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="info_section">
             <div class="row">
                 <b>Chassis Name</b>
-                {{form.chassis_name}}
+                {{form.simulation.name}}
             </div>
             <div class="row">
                 <b>Description</b>
-                {{form.description}}
+                {{form.simulation_meta.description}}
             </div>
             <div class="row">
                 <b></b>
@@ -37,6 +33,7 @@
     </form>
 </div>
 
+
 <script>
     var read_file = document.getElementById("read");
     var columns = document.getElementById("columns");
@@ -44,47 +41,47 @@
 
     const names_div = '<div class="column" id="names">' +
                 '<b>Front wing name</b>' +
-                '{{form.front_wing_name}}' +
+                '{{form.front_wing.name}}' +
                 '<b>Rear wing name</b>' +
-                '{{form.rear_wing_name}}' +
+                '{{form.rear_wing.name}}' +
                 '<b>Sidepod name</b>' +
-                '{{form.sidepod_name}}' +
+                '{{form.sidepod.name}}' +
                 '<b>Diffuser name</b>' +
-                '{{form.diffuser_name}}' +
+                '{{form.diffuser.name}}' +
                 '<b>Undertray name</b>' +
-                '{{form.undertray_name}}' +
+                '{{form.undertray.name}}' +
                 '<b>Nose name</b>' +
-                '{{form.nose_name}}' +
+                '{{form.nose.name}}' +
             '</div>'
 
         const df_div = '<div class="column" id="df">' +
                 '<b>Front wing df</b>' +
-                '{{form.front_wing_df}}' +
+                '{{form.front_wing.df}}' +
                 '<b>Rear wing df</b>' +
-                '{{form.rear_wing_df}}' +
+                '{{form.rear_wing.df}}' +
                 '<b>Sidepod df</b>' +
-                '{{form.sidepod_df}}' +
+                '{{form.sidepod.df}}' +
                 '<b>Diffuser df</b>' +
-                '{{form.diffuser_df}}' +
+                '{{form.diffuser.df}}' +
                 '<b>Undertray df</b>' +
-                '{{form.undertray_df}}' +
+                '{{form.undertray.df}}' +
                 '<b>Nose df</b>' +
-                '{{form.nose_df}}' +
+                '{{form.nose.df}}' +
             '</div>';
 
         const drag_div =  '<div class="column" id="drag">' +
                 '<b>Front wing drag</b>' +
-                '{{form.front_wing_drag}}' +
+                '{{form.front_wing.drag}}' +
                 '<b>Rear wing drag</b>' +
-                '{{form.rear_wing_drag}}' +
+                '{{form.rear_wing.drag}}' +
                 '<b>Sidepod drag</b>' +
-                '{{form.sidepod_drag}}' +
+                '{{form.sidepod.drag}}' +
                 '<b>Diffuser drag</b>' +
-                '{{form.diffuser_drag}}' +
+                '{{form.diffuser.drag}}' +
                 '<b>Undertray drag</b>' +
-                '{{form.undertray_drag}}' +
+                '{{form.undertray.drag}}' +
                 '<b>Nose drag</b>' +
-                '{{form.nose_drag}}' +
+                '{{form.nose.drag}}' +
             '</div>'
 
         columns.innerHTML = names_div + df_div + drag_div;
@@ -104,6 +101,5 @@
         }
     }
 </script>
--->
 
 {% endblock content %}

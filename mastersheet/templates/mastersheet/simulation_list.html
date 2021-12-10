@@ -1,6 +1,9 @@
 {% extends 'mastersheet/main.html' %}
 {% block content %}
 
+<h2>Fuck</h2>
+
+<!---
 <div class="header-bar">
     <div>
         <h1>C-models mastersheet</h1>
@@ -30,35 +33,35 @@
         <div class="simulation-wrapper">
             <div class="simulation-title">
                 <div class="simulation-icon"></div>
-                <a href="{% url 'simulation' simulation.chassis_name %}">{{simulation}}</a>
+                <a href="{% url 'simulation' simulation.name %}">{{simulation}}</a>
             </div>
             <div class="simulation-detail">
                 <div class="simulation-detail">
-                {{simulation.front_wing_name}}
+                {{simulation.front_wing.name}}
                 </div>
                 <div class="simulation-detail">
-                {{simulation.rear_wing_name}}
+                {{simulation.rear_wing.name}}
                 </div>
                 <div class="simulation-detail">
-                {{simulation.sidepod_name}}
+                {{simulation.sidepod.name}}
                 </div>
                 <div class="simulation-detail">
-                {{simulation.diffuser_name}}
+                {{simulation.diffuser.name}}
                 </div>
                 <div class="simulation-detail">
-                {{simulation.undertray_name}}
+                {{simulation.undertray.name}}
                 </div>
                 <div class="simulation-detail">
-                {{simulation.nose_name}}
+                {{simulation.nose.name}}
                 </div>
             </div>
-            <a id='edit-link' href="{% url 'simulation-update' simulation.chassis_name %}">&#9850;</a>
-            <a class='delete-link' href="{% url 'simulation-delete' simulation.chassis_name %}">&#9760;</a>
+            <a id='edit-link' href="{% url 'simulation-update' simulation.chassis.name %}">&#9850;</a>
+            <a class='delete-link' href="{% url 'simulation-delete' simulation.chassis.name %}">&#9760;</a>
         </div>
     {% empty %}
     <div class="simulation-title">No simulations</div>
     {% endfor %}
 </div>
 
-
+--->
 {% endblock content %}

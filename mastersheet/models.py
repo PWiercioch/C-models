@@ -12,6 +12,7 @@ class SimulationMeta(models.Model):
 
 
 class FrontWing(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=10)
     df = models.FloatField(blank=True)
     drag = models.FloatField(blank=True)
@@ -122,12 +123,13 @@ class WheelRear(models.Model):
 class Simulation(models.Model):
     name = models.CharField(primary_key=True, max_length=10)
 
-    front_wing = models.OneToOneField(FrontWing, on_delete=models.CASCADE, blank=True)
-    rear_wing = models.OneToOneField(RearWing, on_delete=models.CASCADE, blank=True)
-    sidepod = models.OneToOneField(Sidepod, on_delete=models.CASCADE, blank=True)
-    diffuser = models.OneToOneField(Diffuser, on_delete=models.CASCADE, blank=True)
-    undertray = models.OneToOneField(Undertray, on_delete=models.CASCADE, blank=True)
-    nose = models.OneToOneField(Nose, on_delete=models.CASCADE, blank=True)
+    simulation_meta = models.ForeignKey(SimulationMeta, on_delete=models.CASCADE, blank=True)
+    front_wing = models.ForeignKey(FrontWing, on_delete=models.CASCADE, blank=True)
+    rear_wing = models.ForeignKey(RearWing, on_delete=models.CASCADE, blank=True)
+    sidepod = models.ForeignKey(Sidepod, on_delete=models.CASCADE, blank=True)
+    diffuser = models.ForeignKey(Diffuser, on_delete=models.CASCADE, blank=True)
+    undertray = models.ForeignKey(Undertray, on_delete=models.CASCADE, blank=True)
+    nose = models.ForeignKey(Nose, on_delete=models.CASCADE, blank=True)
 
 
     def __str__(self):
