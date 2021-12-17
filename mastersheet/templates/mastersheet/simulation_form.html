@@ -6,9 +6,11 @@
 </div>
 
 <form method="POST" action="" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form }}
-        <input class="button" type="submit" value="Submit">-->
+    {% csrf_token %}
+    <b>Simulation Name</b>
+    <input type="text" id="simulation_name" name="simulation_name">
+    {{ form }}
+    <input class="button" type="submit" value="Submit">-->
 </form>
 
 <!--<div class="card-body">-->
