@@ -71,7 +71,6 @@ class WheelRearForm(forms.ModelForm):
 
 class SimulationMultiForm(MultiModelForm):
     form_classes = {
-        'simulation': SimulationForm,
         'front_wing': FrontWingForm,
         'rear_wing': RearWingForm,
         'sidepod': SidepodForm,

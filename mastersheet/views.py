@@ -76,6 +76,12 @@ class SimulationCreate(FormView):
 
     template_name = 'mastersheet/simulation_form.html'
 
+    def form_valid(self, form):
+        # form.instance.user = self.request.user
+        # TODO - create another post to Simulation tabel basing on self.request.POST, first we need to POST data from the form and then do another form
+        # TODO - try to call super method before the return statement
+        return super(SimulationCreate, self).form_valid(form)
+
 
 class SimulationCreate_2(LoginRequiredMixin, CreateView):
 

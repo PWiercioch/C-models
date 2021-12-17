@@ -1,9 +1,6 @@
 {% extends 'mastersheet/main.html' %}
 {% block content %}
 
-<h2>Fuck</h2>
-
-<!---
 <div class="header-bar">
     <div>
         <h1>C-models mastersheet</h1>
@@ -26,10 +23,8 @@
     <a id='add-link' href="{% url 'simulation-create' %}">&#9998;</a>
 </div>
 
-
-
 <div class="simulation-items-wrapper">
-    {% for simulation in simulations %}
+    {% for simulation in object_list %}
         <div class="simulation-wrapper">
             <div class="simulation-title">
                 <div class="simulation-icon"></div>
@@ -55,13 +50,12 @@
                 {{simulation.nose.name}}
                 </div>
             </div>
-            <a id='edit-link' href="{% url 'simulation-update' simulation.chassis.name %}">&#9850;</a>
-            <a class='delete-link' href="{% url 'simulation-delete' simulation.chassis.name %}">&#9760;</a>
+            <a id='edit-link' href="{% url 'simulation-update' simulation.name %}">&#9850;</a>
+            <a class='delete-link' href="{% url 'simulation-delete' simulation.name %}">&#9760;</a>
         </div>
     {% empty %}
     <div class="simulation-title">No simulations</div>
     {% endfor %}
 </div>
 
---->
 {% endblock content %}
