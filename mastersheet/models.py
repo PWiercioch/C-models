@@ -130,6 +130,7 @@ class Simulation(models.Model):
     diffuser = models.ForeignKey(Diffuser, on_delete=models.CASCADE, blank=True)
     undertray = models.ForeignKey(Undertray, on_delete=models.CASCADE, blank=True)
     nose = models.ForeignKey(Nose, on_delete=models.CASCADE, blank=True)
+    suspension = models.ForeignKey(Suspension, on_delete=models.CASCADE, blank=True)
 
 
     def __str__(self):

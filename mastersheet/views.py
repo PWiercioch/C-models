@@ -77,6 +77,35 @@ class SimulationCreate(FormView):
     template_name = 'mastersheet/simulation_form.html'
 
     def form_valid(self, form):
+        if self.request.POST.get('Read'):
+            df = handle_uploaded_file.main(self.request.FILES["df"])
+            drag = handle_uploaded_file.main(self.request.FILES["drag"])
+
+            # TODO - check this three or four times!!!!!
+
+            form.forms['front_wing'].instance.df = round(float(df[3]),
+                                       2)  # TODO move to handleuploaded file, add dictionary keys to overwrite form in a loop
+            form.forms['rear_wing'].instance.df = round(float(df[4]), 2)
+            form.forms['sidepod'].instance.df = round(float(df[5]), 2)
+            form.forms['diffuser'].instance.df = round(float(df[2]), 2)
+            form.forms['undertray'].instance.df = round(float(df[1]), 2)  # TODO - modify model - there is no undertray in simulation data
+            form.forms['nose'].instance.df = round(float(df[6]), 2)  # TODO there is no nose
+            form.forms['wheel_front'].instance.df = round(float(df[7]), 2)
+            form.forms['wheel_rear'].instance.df = round(float(df[8]), 2)
+            form.forms['suspension'].instance.df = round(float(df[8]), 2)
+
+            form.forms['front_wing'].instance.drag = round(float(drag[3]),2)
+            form.forms['rear_wing'].instance.drag = round(float(drag[4]), 2)
+            form.forms['sidepod'].instance.drag = round(float(drag[5]), 2)
+            form.forms['diffuser'].instance.drag = round(float(drag[2]), 2)
+            form.forms['undertray'].instance.drag = round(float(drag[1]),2)
+            form.forms['nose'].instance.drag = round(float(drag[6]), 2)
+            form.forms['wheel_front'].instance.drag = round(float(drag[7]), 2)
+            form.forms['wheel_rear'].instance.drag = round(float(drag[8]), 2)
+            form.forms['suspension'].instance.drag = round(float(drag[8]), 2)
+
+            # form.instance = post
+
         pkeys = form.save()
         simulation = Simulation(self.request.POST['simulation_name'],
                                 front_wing=pkeys['front_wing'],
@@ -85,6 +114,7 @@ class SimulationCreate(FormView):
                                 diffuser=pkeys['diffuser'],
                                 undertray=pkeys['undertray'],
                                 nose=pkeys['nose'],
+                                suspension=pkeys['suspension'],
                                 simulation_meta=pkeys['simulation_meta'])
 
         # TODO - handle user
@@ -102,11 +132,11 @@ class SimulationCreate_2(LoginRequiredMixin, CreateView):
     fields = ['name', 'front_wing']
 
     '''
-    fields = ['chassis_name', 'description', 'front_wing_name', 'rear_wing_name',
-              'sidepod_name', 'diffuser_name', 'undertray_name', 'nose_name', 'front_wing_df', 'rear_wing_df',
-              'sidepod_df', 'diffuser_df', 'undertray_df', 'nose_df', 'front_wing_drag',
-              'rear_wing_drag', 'sidepod_drag', 'diffuser_drag', 'undertray_drag', 'nose_drag']
-    '''
+        fields = ['chassis_name', 'description', 'front_wing_name', 'rear_wing_name',
+                  'sidepod_name', 'diffuser_name', 'undertray_name', 'nose_name', 'front_wing_df', 'rear_wing_df',
+                  'sidepod_df', 'diffuser_df', 'undertray_df', 'nose_df', 'front_wing_drag',
+                  'rear_wing_drag', 'sidepod_drag', 'diffuser_drag', 'undertray_drag', 'nose_drag']
+        '''
     success_url = reverse_lazy('simulations')
 
 

@@ -12,7 +12,7 @@ class SimulationForm(forms.ModelForm):
 class SimulationMetaForm(forms.ModelForm):
     class Meta:
         model = SimulationMeta
-        fields = '__all__'
+        fields = ['description']
 
 
 class FrontWingForm(forms.ModelForm):
