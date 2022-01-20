@@ -8,7 +8,7 @@ from django.contrib.auth.views import LoginView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Simulation, SimulationMeta
+from .models import Simulation #, SimulationMeta
 
 from . import handle_uploaded_file
 from . import forms
@@ -19,9 +19,9 @@ class CustomLoginView(LoginView):
     redirect_authenticated_user = True
 
     def get_success_url(self):
-        return reverse_lazy('simulations')
+        return 0 #reverse_lazy('simulations')
 
-class SimulationList(LoginRequiredMixin, ListView):
+class SimulationList(ListView):
     template_name = 'mastersheet/simulation_list.html'
     model = Simulation
 
@@ -55,7 +55,7 @@ class SimulationDelete(LoginRequiredMixin, DeleteView):
     model = Simulation
     context_object_name = 'simulation'
 
-    success_url = reverse_lazy('simulations')
+    # success_url = reverse_lazy('simulations')
 
 
 class SimulationUpdate(LoginRequiredMixin, UpdateView):
@@ -64,12 +64,12 @@ class SimulationUpdate(LoginRequiredMixin, UpdateView):
               'sidepod_name', 'diffuser_name', 'undertray_name', 'nose_name', 'front_wing_df','rear_wing_df',
               'sidepod_df', 'diffuser_df', 'undertray_df', 'nose_df', 'front_wing_drag',
               'rear_wing_drag','sidepod_drag', 'diffuser_drag', 'undertray_drag', 'nose_drag']
-    success_url = reverse_lazy('simulations')
+    # success_url = reverse_lazy('simulations')
 
 
 class SimulationCreate(FormView):
     context_object_name = 'simulation'
-
+    '''
     form_class = forms.SimulationMultiForm
 
     success_url = reverse_lazy('simulations')
@@ -122,6 +122,7 @@ class SimulationCreate(FormView):
 
         simulation.save()
         return super(SimulationCreate, self).form_valid(form)
+        '''
 
 
 class SimulationCreate_2(LoginRequiredMixin, CreateView):
@@ -137,7 +138,7 @@ class SimulationCreate_2(LoginRequiredMixin, CreateView):
                   'sidepod_df', 'diffuser_df', 'undertray_df', 'nose_df', 'front_wing_drag',
                   'rear_wing_drag', 'sidepod_drag', 'diffuser_drag', 'undertray_drag', 'nose_drag']
         '''
-    success_url = reverse_lazy('simulations')
+    # success_url = reverse_lazy('simulations')
 
 
 

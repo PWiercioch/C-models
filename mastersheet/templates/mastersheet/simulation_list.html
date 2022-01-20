@@ -28,7 +28,7 @@
         <div class="simulation-wrapper">
             <div class="simulation-title">
                 <div class="simulation-icon"></div>
-                <a href="{% url 'simulation' simulation.name %}">{{simulation}}</a>
+                <a href="{% url 'simulation'  simulation.sub_v %}">{{simulation}}</a>
             </div>
             <div class="simulation-detail">
                 <div class="simulation-detail">
@@ -50,8 +50,8 @@
                 {{simulation.nose.name}}
                 </div>
             </div>
-            <a id='edit-link' href="{% url 'simulation-update' simulation.name %}">&#9850;</a>
-            <a class='delete-link' href="{% url 'simulation-delete' simulation.name %}">&#9760;</a>
+            <a id='edit-link' href="{% url 'simulation-update' simulation %}">&#9850;</a>
+            <a class='delete-link' href="{% url 'simulation-delete' simulation %}">&#9760;</a>
         </div>
     {% empty %}
     <div class="simulation-title">No simulations</div>

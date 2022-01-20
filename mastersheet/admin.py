@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import Simulation, SimulationMeta, FrontWing, RearWing, Diffuser, Sidepod, Suspension, Nose, Undertray, WheelRear, WheelFront
+from .models import Simulation #, SimulationMeta, FrontWing, RearWing, Diffuser, Sidepod, Suspension, Nose, Undertray, WheelRear, WheelFront
 
 admin.site.register(Simulation)
+'''
 admin.site.register(SimulationMeta)
 admin.site.register(FrontWing)
 admin.site.register(RearWing)
@@ -12,3 +13,4 @@ admin.site.register(Nose)
 admin.site.register(Undertray)
 admin.site.register(WheelRear)
 admin.site.register(WheelFront)
+'''

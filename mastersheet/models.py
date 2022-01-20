@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
-
+'''
 class SimulationMeta(models.Model):
     description = models.TextField(null=True, blank=True)
     # complete = models.BooleanField(default=False) # might be used in te future to prompt user to finish simulation
@@ -139,3 +139,21 @@ class Simulation(models.Model):
     class Meta:
         ordering = ['name']
 
+'''
+
+class Simulation(models.Model):
+    main_v = models.CharField(primary_key=True, max_length=10)
+    sub_v = models.IntegerField()
+    slug = models.SlugField()
+
+    class Meta:
+        managed = False
+        db_table = 'Simulation'
+        '''
+        CREATE TABLE Simulation (
+        main_v, 
+        sub_v, 
+        slug, 
+        PRIMARY KEY (main_v, sub_v)
+        );
+        '''

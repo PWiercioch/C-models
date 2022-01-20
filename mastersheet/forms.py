@@ -1,8 +1,8 @@
 from django import forms
-from .models import Simulation, FrontWing, SimulationMeta, RearWing, Diffuser, Sidepod, Suspension, Undertray, Nose, WheelRear, WheelFront
+# from .models import Simulation, FrontWing, SimulationMeta, RearWing, Diffuser, Sidepod, Suspension, Undertray, Nose, WheelRear, WheelFront
 from betterforms.multiform import MultiModelForm
 
-
+''''
 class SimulationForm(forms.ModelForm):
     class Meta:
         model = Simulation
@@ -82,3 +82,4 @@ class SimulationMultiForm(MultiModelForm):
         'undertray': UndertrayForm,
         'simulation_meta': SimulationMetaForm
     }
+'''
