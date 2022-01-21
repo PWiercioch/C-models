@@ -140,20 +140,72 @@ class Simulation(models.Model):
         ordering = ['name']
 
 '''
+class Type(models.Model):
+    type = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.type
+
+
+class Part(models.Model):
+    type = models.ForeignKey(Type, on_delete=models.CASCADE, blank=True)
+
+    main_v = models.CharField(max_length=5)
+    sub_v = models.IntegerField()
+
+    class Meta:
+        ordering = ['main_v', 'sub_v']
+
+
+class Force(models.Model):
+    body = models.FloatField(blank=True)
+    diffuser = models.FloatField(blank=True)
+    front_wing = models.FloatField(blank=True)
+    rear_wing = models.FloatField(blank=True)
+    sidepod = models.FloatField(blank=True)
+    suspension = models.FloatField(blank=True)
+    wheel_front = models.FloatField(blank=True)
+    wheel_rear = models.FloatField(blank=True)
+    total = models.FloatField(blank=True)
+
+
+class Chassis(models.Model):
+    body = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='b')
+    front_wing = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='fw')
+    rear_wing = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='rw')
+    sidepod = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='s')
+    suspension = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='su')
+    wheel_front = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='wf')
+    wheel_rear = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='wr')
+
 
 class Simulation(models.Model):
     main_v = models.CharField(primary_key=True, max_length=10)
     sub_v = models.IntegerField()
     slug = models.SlugField()
 
+    df = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True)
+    df = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True)
+    chassis = models.ForeignKey(Chassis, on_delete=models.CASCADE, blank=True)
+
+    def __str__(self):
+        return self.main_v + '_' + str(self.sub_v)
+
+
     class Meta:
-        managed = False
         db_table = 'Simulation'
+        ordering = ['main_v', 'sub_v']
+
+        managed = False
+        # This requires manual creation(and updates probably) of the table
         '''
         CREATE TABLE Simulation (
         main_v, 
-        sub_v, 
+        sub_v,
+        front_wing_id, 
         slug, 
-        PRIMARY KEY (main_v, sub_v)
+        PRIMARY KEY (main_v, sub_v),
+        FOREIGN KEY (front_wing_id) REFERENCES mastersheet_fw(id)
         );
         '''
