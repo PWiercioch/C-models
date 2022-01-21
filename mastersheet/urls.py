@@ -9,6 +9,6 @@ urlpatterns = [
     path('', SimulationList.as_view(), name='simulations'),
     path('simulation/<slug:slug>/', SimulationDetail.as_view(), name='simulation'),
     path('simulation-create/', SimulationCreate.as_view(), name='simulation-create'),
-    path('simulation-update/<str:pk>/', SimulationUpdate.as_view(), name='simulation-update'),
-    path('simulation-delete/<str:pk>/', SimulationDelete.as_view(), name='simulation-delete'),
+    path('simulation-update/<slug:slug>/', SimulationUpdate.as_view(), name='simulation-update'),
+    path('simulation-delete/<slug:slug>/', SimulationDelete.as_view(), name='simulation-delete'),
 ]

@@ -8,7 +8,7 @@ from django.contrib.auth.views import LoginView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Simulation #, SimulationMeta
+from .models import Simulation
 
 from . import handle_uploaded_file
 from . import forms

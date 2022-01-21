@@ -180,12 +180,12 @@ class Chassis(models.Model):
 
 
 class Simulation(models.Model):
-    main_v = models.CharField(primary_key=True, max_length=10)
+    main_v = models.CharField(max_length=10)
     sub_v = models.IntegerField()
-    slug = models.SlugField()
+    slug = models.SlugField(primary_key=True)  # TODO - two different primary keys? Is composite necessary or will this do the trick?
 
-    df = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True)
-    df = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True)
+    df = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True, related_name='df')
+    drag = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True, related_name='drag')
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True)
     chassis = models.ForeignKey(Chassis, on_delete=models.CASCADE, blank=True)
 
@@ -200,12 +200,20 @@ class Simulation(models.Model):
         managed = False
         # This requires manual creation(and updates probably) of the table
         '''
+        sqlite3  db.sqlite3
+        
         CREATE TABLE Simulation (
         main_v, 
-        sub_v,
-        front_wing_id, 
-        slug, 
+        sub_v, 
+        slug,
+        df_id,
+        drag_id,
+        parent_id,
+        chassis_id, 
         PRIMARY KEY (main_v, sub_v),
-        FOREIGN KEY (front_wing_id) REFERENCES mastersheet_fw(id)
+        FOREIGN KEY (df_id) REFERENCES mastersheet_force(id),
+        FOREIGN KEY (drag_id) REFERENCES mastersheet_force(id),
+        FOREIGN KEY (main_v, sub_v) REFERENCES Simulation(main_v, sub_v),
+        FOREIGN KEY (chassis_id) REFERENCES mastersheet_chassis(id)
         );
         '''
