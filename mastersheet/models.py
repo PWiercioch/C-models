@@ -153,6 +153,9 @@ class Part(models.Model):
     main_v = models.CharField(max_length=5)
     sub_v = models.IntegerField()
 
+    def __str__(self):
+        return self.main_v + '_' + str(self.sub_v)
+
     class Meta:
         ordering = ['main_v', 'sub_v']
 
@@ -174,6 +177,7 @@ class Chassis(models.Model):
     front_wing = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='fw')
     rear_wing = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='rw')
     sidepod = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='s')
+    diffuser = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, null=True, related_name='d')
     suspension = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='su')
     wheel_front = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='wf')
     wheel_rear = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='wr')
@@ -188,6 +192,8 @@ class Simulation(models.Model):
     drag = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True, related_name='drag')
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True)
     chassis = models.ForeignKey(Chassis, on_delete=models.CASCADE, blank=True)
+    balance = models.FloatField(blank=True)
+    massflow = models.FloatField(blank=True)
 
     def __str__(self):
         return self.main_v + '_' + str(self.sub_v)
@@ -210,6 +216,8 @@ class Simulation(models.Model):
         drag_id,
         parent_id,
         chassis_id, 
+        balance,
+        massflow,
         PRIMARY KEY (main_v, sub_v),
         FOREIGN KEY (df_id) REFERENCES mastersheet_force(id),
         FOREIGN KEY (drag_id) REFERENCES mastersheet_force(id),

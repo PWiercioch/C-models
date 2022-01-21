@@ -5,48 +5,42 @@
     <h1>Simulation: {{simulation}}</h1>
     <a href="{% url 'simulations' %}">&#8592; Back</a>
 </div>
-<!--- TODO in a loop!! --->
+<!--- TODO in a loop!! - JS?--->
 <div class="simulation-title">
     <h3>Downforce</h3>
 </div>
 <div class="simulation-detail">
-    <div class="simulation-detail">
-         FW
+    <div class="simulation-2rows">
+        <b>U</b>
+        {{simulation.df.body}}
     </div>
-    <div class="simulation-detail">
-         RW
+    <div class="simulation-2rows">
+        <b>FW</b>
+        {{simulation.df.front_wing}}
     </div>
-    <div class="simulation-detail">
-         S
+    <div class="simulation-2rows">
+        <b>RW</b>
+        {{simulation.df.rear_wing}}
     </div>
-    <div class="simulation-detail">
-         D
+    <div class="simulation-2rows">
+        <b>S</b>
+        {{simulation.df.sidepod}}
     </div>
-    <div class="simulation-detail">
-          U
+    <div class="simulation-2rows">
+        <b>D</b>
+        {{simulation.df.diffuser}}
     </div>
-    <div class="simulation-detail">
-          N
+    <div class="simulation-2rows">
+        <b>SU</b>
+        {{simulation.df.suspension}}
     </div>
-</div>
-<div class="simulation-detail">
-    <div class="simulation-detail">
-         {{simulation.front_wing_df}}
+    <div class="simulation-2rows">
+        <b>Front Wheel</b>
+        {{simulation.df.wheel_front}}
     </div>
-    <div class="simulation-detail">
-         {{simulation.rear_wing_df}}
-    </div>
-    <div class="simulation-detail">
-         {{simulation.sidepod_df}}
-    </div>
-    <div class="simulation-detail">
-         {{simulation.diffuser_df}}
-    </div>
-    <div class="simulation-detail">
-          {{simulation.undertray_df}}
-    </div>
-    <div class="simulation-detail">
-          {{simulation.nose_df}}
+    <div class="simulation-2rows">
+        <b>Rear Wheel</b>
+        {{simulation.df.wheel_rear}}
     </div>
 </div>
 
@@ -56,43 +50,37 @@
     <h3>Drag</h3>
 </div>
 <div class="simulation-detail">
-    <div class="simulation-detail">
-         FW
+    <div class="simulation-2rows">
+        <b>U</b>
+        {{simulation.drag.body}}
     </div>
-    <div class="simulation-detail">
-         RW
+    <div class="simulation-2rows">
+        <b>FW</b>
+        {{simulation.drag.front_wing}}
     </div>
-    <div class="simulation-detail">
-         S
+    <div class="simulation-2rows">
+        <b>RW</b>
+        {{simulation.drag.rear_wing}}
     </div>
-    <div class="simulation-detail">
-         D
+    <div class="simulation-2rows">
+        <b>S</b>
+        {{simulation.drag.sidepod}}
     </div>
-    <div class="simulation-detail">
-          U
+    <div class="simulation-2rows">
+        <b>D</b>
+        {{simulation.drag.diffuser}}
     </div>
-    <div class="simulation-detail">
-          N
+    <div class="simulation-2rows">
+        <b>SU</b>
+        {{simulation.drag.suspension}}
     </div>
-</div>
-<div class="simulation-detail">
-    <div class="simulation-detail">
-         {{simulation.front_wing_drag}}
+    <div class="simulation-2rows">
+        <b>Front Wheel</b>
+        {{simulation.drag.wheel_front}}
     </div>
-    <div class="simulation-detail">
-         {{simulation.rear_wing_drag}}
-    </div>
-    <div class="simulation-detail">
-         {{simulation.sidepod_drag}}
-    </div>
-    <div class="simulation-detail">
-         {{simulation.diffuser_drag}}
-    </div>
-    <div class="simulation-detail">
-          {{simulation.undertray_drag}}
-    </div>
-    <div class="simulation-detail">
-          {{simulation.nose_drag}}
+    <div class="simulation-2rows">
+        <b>Rear Wheel</b>
+        {{simulation.drag.wheel_rear}}
     </div>
 </div>
 

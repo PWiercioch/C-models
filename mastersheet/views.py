@@ -47,7 +47,7 @@ class SimulationList2(LoginRequiredMixin, ListView):
 
 class SimulationDetail(LoginRequiredMixin, DetailView):
     model = Simulation
-    context_object_name = 'simulation'
+    # context_object_name = 'simulation'
     # template_name = 'mastersheet/simulation_detail.html'
 
 
@@ -60,10 +60,13 @@ class SimulationDelete(LoginRequiredMixin, DeleteView):
 
 class SimulationUpdate(LoginRequiredMixin, UpdateView):
     model = Simulation
+    fields = '__all__'
+    '''
     fields = ['chassis_name', 'description', 'front_wing_name', 'rear_wing_name',
               'sidepod_name', 'diffuser_name', 'undertray_name', 'nose_name', 'front_wing_df','rear_wing_df',
               'sidepod_df', 'diffuser_df', 'undertray_df', 'nose_df', 'front_wing_drag',
               'rear_wing_drag','sidepod_drag', 'diffuser_drag', 'undertray_drag', 'nose_drag']
+              '''
     # success_url = reverse_lazy('simulations')
 
 

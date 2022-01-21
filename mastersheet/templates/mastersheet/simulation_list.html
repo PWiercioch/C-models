@@ -24,34 +24,78 @@
 </div>
 
 <div class="simulation-items-wrapper">
+    <div class="simulation-header">
+        <div class="simulation-detail">
+        Body
+        </div>
+        <div class="simulation-detail">
+        Front Wing
+        </div>
+        <div class="simulation-detail">
+        Rear Wing
+        </div>
+        <div class="simulation-detail">
+        Sidepod
+        </div>
+        <div class="simulation-detail">
+        Diffuser
+        </div>
+        <div class="simulation-detail">
+        Suspension
+        </div>
+        <div class="simulation-detail">
+        Downforce
+        </div>
+        <div class="simulation-detail">
+        Drag
+        </div>
+        <div class="simulation-detail">
+        Balance
+        </div>
+        <div class="simulation-detail">
+        HE - massflow
+        </div>
+    </div>
     {% for simulation in object_list %}
         <div class="simulation-wrapper">
             <div class="simulation-title">
                 <div class="simulation-icon"></div>
-                <a href="{% url 'simulation'  simulation.sub_v %}">{{simulation}}</a>
+                <a href="{% url 'simulation'  simulation.slug %}">C_{{simulation}}</a>
             </div>
             <div class="simulation-detail">
                 <div class="simulation-detail">
-                {{simulation.front_wing.name}}
+                B_{{simulation.chassis.body}}
                 </div>
                 <div class="simulation-detail">
-                {{simulation.rear_wing.name}}
+                FW_{{simulation.chassis.front_wing}}
                 </div>
                 <div class="simulation-detail">
-                {{simulation.sidepod.name}}
+                RW_{{simulation.chassis.rear_wing}}
                 </div>
                 <div class="simulation-detail">
-                {{simulation.diffuser.name}}
+                S_{{simulation.chassis.sidepod}}
                 </div>
                 <div class="simulation-detail">
-                {{simulation.undertray.name}}
+                D_{{simulation.chassis.diffuser}}
                 </div>
                 <div class="simulation-detail">
-                {{simulation.nose.name}}
+                SU_{{simulation.chassis.suspension}}
+                </div>
+                <div class="simulation-detail">
+                {{simulation.df.total}}
+                </div>
+                <div class="simulation-detail">
+                {{simulation.drag.total}}
+                </div>
+                <div class="simulation-detail">
+                {{simulation.balance}}
+                </div>
+                <div class="simulation-detail">
+                {{simulation.massflow}}
                 </div>
             </div>
-            <a id='edit-link' href="{% url 'simulation-update' simulation %}">&#9850;</a>
-            <a class='delete-link' href="{% url 'simulation-delete' simulation %}">&#9760;</a>
+            <a id='edit-link' href="{% url 'simulation-update' simulation.slug %}">&#9850;</a>
+            <a class='delete-link' href="{% url 'simulation-delete' simulation.slug %}">&#9760;</a>
         </div>
     {% empty %}
     <div class="simulation-title">No simulations</div>
