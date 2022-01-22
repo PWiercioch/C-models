@@ -186,6 +186,7 @@ class Chassis(models.Model):
 class Simulation(models.Model):
     main_v = models.CharField(max_length=10)
     sub_v = models.IntegerField()
+    # description = models.TextField(null=True, blank=True)
     slug = models.SlugField(primary_key=True)  # TODO - two different primary keys? Is composite necessary or will this do the trick?
 
     df = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True, related_name='df')
@@ -210,7 +211,8 @@ class Simulation(models.Model):
         
         CREATE TABLE Simulation (
         main_v, 
-        sub_v, 
+        sub_v,
+        description, 
         slug,
         df_id,
         drag_id,

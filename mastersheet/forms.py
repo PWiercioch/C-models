@@ -1,6 +1,46 @@
 from django import forms
-# from .models import Simulation, FrontWing, SimulationMeta, RearWing, Diffuser, Sidepod, Suspension, Undertray, Nose, WheelRear, WheelFront
+from .models import Simulation, Chassis, Force, Part, Type
 from betterforms.multiform import MultiModelForm
+
+
+class ChassisForm(forms.ModelForm):
+    class Meta:
+        model = Simulation
+        fields = '__all__'
+
+class ForceForm(forms.ModelForm):
+    class Meta:
+        model = Force
+        fields = ['body', 'front_wing', 'rear_wing', 'sidepod', 'diffuser', 'suspension', 'wheel_front', 'wheel_rear']
+
+class PartForm(forms.ModelForm):
+    class Meta:
+        model = Part
+        fields = '__all__'
+
+class TypeForm(forms.ModelForm):
+    class Meta:
+        model = Type
+        fields = '__all__'
+
+class ChassisMultiForm(MultiModelForm):
+    form_classes = {
+        'body': PartForm,
+        'front_wing': PartForm,
+        'rear_wing': PartForm,
+        'sidepod': PartForm,
+        'diffuser': PartForm,
+        'suspension': PartForm,
+        'wheel_front': PartForm,
+        'wheel_rear': PartForm,
+    }
+
+class SimulationMultiForm(MultiModelForm):
+    form_classes = {
+        'chassis': ChassisMultiForm,
+        'df': ForceForm,
+        'drag': ForceForm,
+    }
 
 ''''
 class SimulationForm(forms.ModelForm):

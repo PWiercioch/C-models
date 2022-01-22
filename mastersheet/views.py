@@ -13,6 +13,8 @@ from .models import Simulation
 from . import handle_uploaded_file
 from . import forms
 
+from .forms import SimulationMultiForm
+
 class CustomLoginView(LoginView):
     template_name = 'mastersheet/login.html'
     fields = '__all__'
@@ -72,12 +74,13 @@ class SimulationUpdate(LoginRequiredMixin, UpdateView):
 
 class SimulationCreate(FormView):
     context_object_name = 'simulation'
-    '''
-    form_class = forms.SimulationMultiForm
-
-    success_url = reverse_lazy('simulations')
-
+    form_class = SimulationMultiForm
     template_name = 'mastersheet/simulation_form.html'
+
+    def form_valid(self, form):
+        return super(SimulationCreate, self).form_valid(form)
+    '''
+    success_url = reverse_lazy('simulations')
 
     def form_valid(self, form):
         if self.request.POST.get('Read'):

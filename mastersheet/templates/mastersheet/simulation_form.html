@@ -20,7 +20,7 @@
         <div class="info_section">
             <div class="row">
                 <b>Simulation Name</b>
-                <input type="text" id="simulation_name" name="simulation_name">
+
             </div>
             <div class="row">
                 <b>Description</b>
@@ -48,66 +48,76 @@
     var files = document.getElementById("files");
 
     const names_div = '<div class="column" id="names">' +
+                '<b>Body name</b>' +
+                '<div class="form-name">' +
+                '{{form.chassis.body.main_v}}{{form.chassis.body.sub_v}}' +
+                '</div>' +
                 '<b>Front wing name</b>' +
-                '{{form.front_wing.name}}' +
+                '<div class="form-name">' +
+                '{{form.chassis.front_wing.main_v}}{{form.chassis.front_wing.sub_v}}' +
+                '</div>' +
                 '<b>Rear wing name</b>' +
-                '{{form.rear_wing.name}}' +
+                '<div class="form-name">' +
+                '{{form.chassis.rear_wing.main_v}}{{form.chassis.rear_wing.sub_v}}' +
+                '</div>' +
                 '<b>Sidepod name</b>' +
-                '{{form.sidepod.name}}' +
+                '<div class="form-name">' +
+                '{{form.chassis.sidepod.main_v}}{{form.chassis.sidepod.sub_v}}' +
+                '</div>' +
                 '<b>Diffuser name</b>' +
-                '{{form.diffuser.name}}' +
-                '<b>Undertray name</b>' +
-                '{{form.undertray.name}}' +
-                '<b>Nose name</b>' +
-                '{{form.nose.name}}' +
+                '<div class="form-name">' +
+                '{{form.chassis.diffuser.main_v}}{{form.chassis.diffuser.sub_v}}' +
+                '</div>' +
                 '<b>Suspension name</b>' +
-                '{{form.suspension.name}}' +
+                '<div class="form-name">' +
+                '{{form.chassis.suspension.main_v}}{{form.chassis.suspension.sub_v}}' +
+                '</div>' +
                 '<b>Front wheel name</b>' +
-                '{{form.wheel_front.name}}' +
+                '<div class="form-name">' +
+                '{{form.chassis.wheel_front.main_v}}{{form.chassis.wheel_front.sub_v}}' +
+                '</div>' +
                 '<b>Rear wheel name</b>' +
-                '{{form.wheel_rear.name}}' +
+                '<div class="form-name">' +
+                '{{form.chassis.wheel_rear.main_v}}{{form.chassis.wheel_rear.sub_v}}' +
+                '</div>' +
             '</div>'
 
         const df_div = '<div class="column" id="df">' +
+                '<b>Body df</b>' +
+                '{{form.df.body}}' +
                 '<b>Front wing df</b>' +
-                '{{form.front_wing.df}}' +
+                '{{form.df.front_wing}}' +
                 '<b>Rear wing df</b>' +
-                '{{form.rear_wing.df}}' +
+                '{{form.df.rear_wing}}' +
                 '<b>Sidepod df</b>' +
-                '{{form.sidepod.df}}' +
+                '{{form.df.sidepod}}' +
                 '<b>Diffuser df</b>' +
-                '{{form.diffuser.df}}' +
-                '<b>Undertray df</b>' +
-                '{{form.undertray.df}}' +
-                '<b>Nose df</b>' +
-                '{{form.nose.df}}' +
+                '{{form.df.diffuser}}' +
                 '<b>Suspension df</b>' +
-                '{{form.suspension.df}}' +
+                '{{form.df.suspension}}' +
                 '<b>Front wheel df</b>' +
-                '{{form.wheel_front.df}}' +
+                '{{form.df.wheel_front}}' +
                 '<b>Rear wheel df</b>' +
-                '{{form.wheel_rear.df}}' +
+                '{{form.df.wheel_rear}}' +
             '</div>';
 
         const drag_div =  '<div class="column" id="drag">' +
+                '<b>Body drag</b>' +
+                '{{form.drag.body}}' +
                 '<b>Front wing drag</b>' +
-                '{{form.front_wing.drag}}' +
+                '{{form.drag.front_wing}}' +
                 '<b>Rear wing drag</b>' +
-                '{{form.rear_wing.drag}}' +
+                '{{form.drag.rear_wing}}' +
                 '<b>Sidepod drag</b>' +
-                '{{form.sidepod.drag}}' +
+                '{{form.drag.sidepod}}' +
                 '<b>Diffuser drag</b>' +
-                '{{form.diffuser.drag}}' +
-                '<b>Undertray drag</b>' +
-                '{{form.undertray.drag}}' +
-                '<b>Nose drag</b>' +
-                '{{form.nose.drag}}' +
+                '{{form.drag.diffuser}}' +
                 '<b>Suspension drag</b>' +
-                '{{form.suspension.drag}}' +
-                '<b>Front wheel name</b>' +
-                '{{form.wheel_front.drag}}' +
+                '{{form.drag.suspension}}' +
+                '<b>Front wheel drag</b>' +
+                '{{form.drag.wheel_front}}' +
                 '<b>Rear wheel drag</b>' +
-                '{{form.wheel_rear.drag}}' +
+                '{{form.drag.wheel_rear}}' +
             '</div>'
 
         columns.innerHTML = names_div + df_div + drag_div;
