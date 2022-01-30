@@ -8,12 +8,13 @@ from django.contrib.auth.views import LoginView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Simulation
+from .models import Simulation, Chassis
 
 from . import handle_uploaded_file
-from . import forms
 
 from .forms import SimulationMultiForm
+
+import re
 
 class CustomLoginView(LoginView):
     template_name = 'mastersheet/login.html'
@@ -57,125 +58,77 @@ class SimulationDelete(LoginRequiredMixin, DeleteView):
     model = Simulation
     context_object_name = 'simulation'
 
-    # success_url = reverse_lazy('simulations')
+    success_url = reverse_lazy('simulations')
 
 
 class SimulationUpdate(LoginRequiredMixin, UpdateView):
     model = Simulation
     fields = '__all__'
+    success_url = reverse_lazy('simulations')
     '''
     fields = ['chassis_name', 'description', 'front_wing_name', 'rear_wing_name',
               'sidepod_name', 'diffuser_name', 'undertray_name', 'nose_name', 'front_wing_df','rear_wing_df',
               'sidepod_df', 'diffuser_df', 'undertray_df', 'nose_df', 'front_wing_drag',
               'rear_wing_drag','sidepod_drag', 'diffuser_drag', 'undertray_drag', 'nose_drag']
               '''
-    # success_url = reverse_lazy('simulations')
-
 
 class SimulationCreate(FormView):
     context_object_name = 'simulation'
     form_class = SimulationMultiForm
     template_name = 'mastersheet/simulation_form.html'
-
-    def form_valid(self, form):
-        return super(SimulationCreate, self).form_valid(form)
-    '''
     success_url = reverse_lazy('simulations')
 
     def form_valid(self, form):
         if self.request.POST.get('Read'):
+            general = handle_uploaded_file.main(self.request.FILES["general"])[0].split(';')
             df = handle_uploaded_file.main(self.request.FILES["df"])
             drag = handle_uploaded_file.main(self.request.FILES["drag"])
 
             # TODO - check this three or four times!!!!!
 
-            form.forms['front_wing'].instance.df = round(float(df[3]),
-                                       2)  # TODO move to handleuploaded file, add dictionary keys to overwrite form in a loop
-            form.forms['rear_wing'].instance.df = round(float(df[4]), 2)
-            form.forms['sidepod'].instance.df = round(float(df[5]), 2)
-            form.forms['diffuser'].instance.df = round(float(df[2]), 2)
-            form.forms['undertray'].instance.df = round(float(df[1]), 2)  # TODO - modify model - there is no undertray in simulation data
-            form.forms['nose'].instance.df = round(float(df[6]), 2)  # TODO there is no nose
-            form.forms['wheel_front'].instance.df = round(float(df[7]), 2)
-            form.forms['wheel_rear'].instance.df = round(float(df[8]), 2)
-            form.forms['suspension'].instance.df = round(float(df[8]), 2)
+            form.forms['df'].instance.body = round(float(df[1]), 2)
+            form.forms['df'].instance.diffuser = round(float(df[2]), 2)
+            form.forms['df'].instance.front_wing = round(float(df[3]), 2)
+            form.forms['df'].instance.rear_wing = round(float(df[4]), 2)
+            form.forms['df'].instance.sidepod = round(float(df[5]), 2)
+            form.forms['df'].instance.suspension = round(float(df[6]), 2)
+            form.forms['df'].instance.wheel_front = round(float(df[7]), 2)
+            form.forms['df'].instance.wheel_rear = round(float(df[8]), 2)
+            form.forms['df'].instance.total = round(float(df[9]), 2)
 
-            form.forms['front_wing'].instance.drag = round(float(drag[3]),2)
-            form.forms['rear_wing'].instance.drag = round(float(drag[4]), 2)
-            form.forms['sidepod'].instance.drag = round(float(drag[5]), 2)
-            form.forms['diffuser'].instance.drag = round(float(drag[2]), 2)
-            form.forms['undertray'].instance.drag = round(float(drag[1]),2)
-            form.forms['nose'].instance.drag = round(float(drag[6]), 2)
-            form.forms['wheel_front'].instance.drag = round(float(drag[7]), 2)
-            form.forms['wheel_rear'].instance.drag = round(float(drag[8]), 2)
-            form.forms['suspension'].instance.drag = round(float(drag[8]), 2)
+            form.forms['drag'].instance.body = round(float(drag[1]),2)
+            form.forms['drag'].instance.diffuser = round(float(drag[2]), 2)
+            form.forms['drag'].instance.front_wing = round(float(drag[3]), 2)
+            form.forms['drag'].instance.rear_wing = round(float(drag[4]), 2)
+            form.forms['drag'].instance.sidepod = round(float(drag[5]),2)
+            form.forms['drag'].instance.suspension = round(float(drag[6]), 2)
+            form.forms['drag'].instance.wheel_front = round(float(drag[7]), 2)
+            form.forms['drag'].instance.wheel_rear = round(float(drag[8]), 2)
+            form.forms['drag'].instance.total = round(float(drag[9]), 2)
 
-            # form.instance = post
-
-        pkeys = form.save()
-        simulation = Simulation(self.request.POST['simulation_name'],
-                                front_wing=pkeys['front_wing'],
-                                rear_wing=pkeys['rear_wing'],
-                                sidepod=pkeys['sidepod'],
-                                diffuser=pkeys['diffuser'],
-                                undertray=pkeys['undertray'],
-                                nose=pkeys['nose'],
-                                suspension=pkeys['suspension'],
-                                simulation_meta=pkeys['simulation_meta'])
-
+        main_v = re.search('\D+', self.request.POST['sim_name'])
+        sub_v = re.search('\d+', self.request.POST['sim_name'])
+        sub_form = form.save()
+        chassis_form = Chassis(body=sub_form['chassis']['body'],
+                               front_wing=sub_form['chassis']['front_wing'],
+                               rear_wing=sub_form['chassis']['rear_wing'],
+                               sidepod=sub_form['chassis']['sidepod'],
+                               diffuser=sub_form['chassis']['diffuser'],
+                               suspension=sub_form['chassis']['suspension'],
+                               wheel_front=sub_form['chassis']['wheel_front'],
+                               wheel_rear=sub_form['chassis']['wheel_rear'])
+        chassis_form.save()
+        simulation = Simulation(main_v=main_v.group().strip('_'),
+                                sub_v=sub_v.group(),
+                                description=self.request.POST['Description'],
+                                slug=main_v.group().strip('_') + '-' + str(sub_v.group()),
+                                df=sub_form['df'],
+                                drag=sub_form['drag'],
+                                chassis=chassis_form,
+                                balance=round(float(general[1]), 2),
+                                massflow=round(float(general[2]), 2))
         # TODO - handle user
-        # form.instance.user = self.request.user
+        # TODO - handle parent simulation
 
         simulation.save()
-        return super(SimulationCreate, self).form_valid(form)
-        '''
-
-
-class SimulationCreate_2(LoginRequiredMixin, CreateView):
-
-    context_object_name = 'simulation'
-    model = Simulation
-
-    fields = ['name', 'front_wing']
-
-    '''
-        fields = ['chassis_name', 'description', 'front_wing_name', 'rear_wing_name',
-                  'sidepod_name', 'diffuser_name', 'undertray_name', 'nose_name', 'front_wing_df', 'rear_wing_df',
-                  'sidepod_df', 'diffuser_df', 'undertray_df', 'nose_df', 'front_wing_drag',
-                  'rear_wing_drag', 'sidepod_drag', 'diffuser_drag', 'undertray_drag', 'nose_drag']
-        '''
-    # success_url = reverse_lazy('simulations')
-
-
-
-    def get_context_data(self, **kwargs):
-        context = super(SimulationCreate, self).get_context_data(**kwargs)
-        context["Visible2"] = False
-        return context
-
-    def form_valid(self, form):
-        '''
-        if self.request.POST.get('Read'):
-            df = handle_uploaded_file.main(self.request.FILES["df"])
-            drag = handle_uploaded_file.main(self.request.FILES["drag"])
-            post = form.instance
-
-            post.front_wing_df = round(float(df[3]),2)  # TODO move to handleuploaded file, add dictionary keys to overwrite form in a loop
-            post.rear_wing_df = round(float(df[4]),2)
-            post.sidepod_df = round(float(df[5]),2)
-            post.diffuser_df = round(float(df[2]),2)
-            post.undertray_df = round(float(df[1]),2)  # TODO - modify model - there is no undertray in simulation data
-            post.nose_df = round(float(df[6]),2)
-
-            post.front_wing_drag = round(float(drag[3]),2)
-            post.rear_wing_drag = round(float(drag[4]),2)
-            post.sidepod_drag = round(float(drag[5]),2)
-            post.diffuser_drag = round(float(drag[2]),2)
-            post.undertray_drag = round(float(drag[1]),2)
-            post.nose_drag = round(float(drag[6]),2)
-
-            form.instance = post
-        '''
-
-        form.instance.user = self.request.user
         return super(SimulationCreate, self).form_valid(form)

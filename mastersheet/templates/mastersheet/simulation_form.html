@@ -20,17 +20,18 @@
         <div class="info_section">
             <div class="row">
                 <b>Simulation Name</b>
-
+                <input type="text" name="sim_name">
             </div>
             <div class="row">
                 <b>Description</b>
-                {{form.simulation_meta.description}}
+                <textarea name="Description"></textarea>
             </div>
             <div class="row">
                 <b></b>
                 <p><label><input type="checkbox" id="read" name="Read" onclick="hideContent()">Read from file</label></p>
             </div>
             <div id="files">
+                <b>File general info: <input type="file" name="general"></b>
                 <b>File with downforce: <input type="file" name="df"></b>
                 <b>File with drag: <input type="file" name="drag"></b>
             </div>

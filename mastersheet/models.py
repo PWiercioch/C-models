@@ -148,7 +148,7 @@ class Type(models.Model):
 
 
 class Part(models.Model):
-    type = models.ForeignKey(Type, on_delete=models.CASCADE, blank=True)
+    type = models.ForeignKey(Type, on_delete=models.CASCADE, blank=True, null=True)
 
     main_v = models.CharField(max_length=5)
     sub_v = models.IntegerField()
@@ -161,40 +161,40 @@ class Part(models.Model):
 
 
 class Force(models.Model):
-    body = models.FloatField(blank=True)
-    diffuser = models.FloatField(blank=True)
-    front_wing = models.FloatField(blank=True)
-    rear_wing = models.FloatField(blank=True)
-    sidepod = models.FloatField(blank=True)
-    suspension = models.FloatField(blank=True)
-    wheel_front = models.FloatField(blank=True)
-    wheel_rear = models.FloatField(blank=True)
-    total = models.FloatField(blank=True)
+    body = models.FloatField(blank=True, null=True)
+    diffuser = models.FloatField(blank=True, null=True)
+    front_wing = models.FloatField(blank=True, null=True)
+    rear_wing = models.FloatField(blank=True, null=True)
+    sidepod = models.FloatField(blank=True, null=True)
+    suspension = models.FloatField(blank=True, null=True)
+    wheel_front = models.FloatField(blank=True, null=True)
+    wheel_rear = models.FloatField(blank=True, null=True)
+    total = models.FloatField(blank=True, null=True)
 
 
 class Chassis(models.Model):
-    body = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='b')
-    front_wing = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='fw')
-    rear_wing = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='rw')
-    sidepod = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='s')
+    body = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, null=True, related_name='b')
+    front_wing = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, null=True, related_name='fw')
+    rear_wing = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, null=True, related_name='rw')
+    sidepod = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, null=True, related_name='s')
     diffuser = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, null=True, related_name='d')
-    suspension = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='su')
-    wheel_front = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='wf')
-    wheel_rear = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, related_name='wr')
+    suspension = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, null=True, related_name='su')
+    wheel_front = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, null=True, related_name='wf')
+    wheel_rear = models.ForeignKey(Part, on_delete=models.CASCADE, blank=True, null=True, related_name='wr')
 
 
 class Simulation(models.Model):
     main_v = models.CharField(max_length=10)
     sub_v = models.IntegerField()
-    # description = models.TextField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     slug = models.SlugField(primary_key=True)  # TODO - two different primary keys? Is composite necessary or will this do the trick?
 
-    df = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True, related_name='df')
-    drag = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True, related_name='drag')
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True)
-    chassis = models.ForeignKey(Chassis, on_delete=models.CASCADE, blank=True)
-    balance = models.FloatField(blank=True)
-    massflow = models.FloatField(blank=True)
+    df = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True, null=True, related_name='df')
+    drag = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True, null=True, related_name='drag')
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    chassis = models.ForeignKey(Chassis, on_delete=models.CASCADE, null=True, blank=True)
+    balance = models.FloatField(blank=True, null=True)
+    massflow = models.FloatField(blank=True, null=True)
 
     def __str__(self):
         return self.main_v + '_' + str(self.sub_v)
