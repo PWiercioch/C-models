@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import SimulationList, CustomLoginView, SimulationDetail, SimulationDelete, SimulationUpdate, SimulationCreate, SimulationCreate_2
+from .views import SimulationList, CustomLoginView, SimulationDetail, SimulationDelete, SimulationUpdate, SimulationCreate
 from django.contrib.auth.views import LogoutView
 
 

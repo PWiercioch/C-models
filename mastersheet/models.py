@@ -154,13 +154,15 @@ class Part(models.Model):
     sub_v = models.IntegerField()
 
     def __str__(self):
-        return self.main_v + '_' + str(self.sub_v)
+        return str(self.type) + "_" + self.main_v + '_' + str(self.sub_v)
 
     class Meta:
         ordering = ['main_v', 'sub_v']
+        unique_together = ('type', 'main_v', 'sub_v')
 
 
 class Force(models.Model):
+    type = models.ForeignKey(Type, on_delete=models.CASCADE, blank=True, null=True)
     body = models.FloatField(blank=True, null=True)
     diffuser = models.FloatField(blank=True, null=True)
     front_wing = models.FloatField(blank=True, null=True)
@@ -170,6 +172,9 @@ class Force(models.Model):
     wheel_front = models.FloatField(blank=True, null=True)
     wheel_rear = models.FloatField(blank=True, null=True)
     total = models.FloatField(blank=True, null=True)
+
+    def __str__(self):
+        return str(self.type) + str(self.id)
 
 
 class Chassis(models.Model):
@@ -202,9 +207,10 @@ class Simulation(models.Model):
 
     class Meta:
         db_table = 'Simulation'
+        unique_together = ('main_v', 'sub_v')
         ordering = ['main_v', 'sub_v']
 
-        managed = False
+        managed = True
         # This requires manual creation(and updates probably) of the table
         '''
         sqlite3  db.sqlite3

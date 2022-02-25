@@ -8,7 +8,7 @@ from django.contrib.auth.views import LoginView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Simulation, Chassis
+from .models import Simulation, Chassis, Part, Type
 
 from . import handle_uploaded_file
 
@@ -106,24 +106,47 @@ class SimulationCreate(FormView):
             form.forms['drag'].instance.wheel_rear = round(float(drag[8]), 2)
             form.forms['drag'].instance.total = round(float(drag[9]), 2)
 
+        form.forms['drag'].instance.type = Type.objects.get(type='drag')
+        form.forms['df'].instance.type = Type.objects.get(type='df')
+
+        drag_form = form.forms['drag'].save()
+        df_form = form.forms['df'].save()
+
+        deleted_forms = {}
+        saved_forms = {}
+        for part_form in form.forms['chassis'].forms:
+            try:
+                deleted_forms[part_form] = Part.objects.get(type=Type.objects.get(type=part_form),
+                                    main_v=form.forms['chassis'].forms[part_form].instance.main_v,
+                                    sub_v=form.forms['chassis'].forms[part_form].instance.sub_v)
+            except:
+                form.forms['chassis'].forms[part_form].instance.type = Type.objects.get(type=part_form)
+                saved_forms[part_form] = form.forms['chassis'].forms[part_form]
+
+        saved_forms = form.forms['chassis'].save()
+
+        chassis_form = {}
+        chassis_form.update(saved_forms)
+        chassis_form.update(deleted_forms)
+
         main_v = re.search('\D+', self.request.POST['sim_name'])
         sub_v = re.search('\d+', self.request.POST['sim_name'])
-        sub_form = form.save()
-        chassis_form = Chassis(body=sub_form['chassis']['body'],
-                               front_wing=sub_form['chassis']['front_wing'],
-                               rear_wing=sub_form['chassis']['rear_wing'],
-                               sidepod=sub_form['chassis']['sidepod'],
-                               diffuser=sub_form['chassis']['diffuser'],
-                               suspension=sub_form['chassis']['suspension'],
-                               wheel_front=sub_form['chassis']['wheel_front'],
-                               wheel_rear=sub_form['chassis']['wheel_rear'])
+        # sub_form = form.save()
+        chassis_form = Chassis(body=chassis_form['body'],
+                               front_wing=chassis_form['front_wing'],
+                               rear_wing=chassis_form['rear_wing'],
+                               sidepod=chassis_form['sidepod'],
+                               diffuser=chassis_form['diffuser'],
+                               suspension=chassis_form['suspension'],
+                               wheel_front=chassis_form['wheel_front'],
+                               wheel_rear=chassis_form['wheel_rear'])
         chassis_form.save()
         simulation = Simulation(main_v=main_v.group().strip('_'),
                                 sub_v=sub_v.group(),
                                 description=self.request.POST['Description'],
                                 slug=main_v.group().strip('_') + '-' + str(sub_v.group()),
-                                df=sub_form['df'],
-                                drag=sub_form['drag'],
+                                df=df_form,
+                                drag=drag_form,
                                 chassis=chassis_form,
                                 balance=round(float(general[1]), 2),
                                 massflow=round(float(general[2]), 2))
