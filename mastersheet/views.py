@@ -22,11 +22,13 @@ class CustomLoginView(LoginView):
     redirect_authenticated_user = True
 
     def get_success_url(self):
-        return 0 #reverse_lazy('simulations')
+        return reverse_lazy('simulations')
 
 class SimulationList(ListView):
     template_name = 'mastersheet/simulation_list.html'
     model = Simulation
+
+    # TODO - handle search
 
 
 class SimulationList2(LoginRequiredMixin, ListView):
@@ -50,8 +52,6 @@ class SimulationList2(LoginRequiredMixin, ListView):
 
 class SimulationDetail(LoginRequiredMixin, DetailView):
     model = Simulation
-    # context_object_name = 'simulation'
-    # template_name = 'mastersheet/simulation_detail.html'
 
 
 class SimulationDelete(LoginRequiredMixin, DeleteView):
@@ -65,12 +65,7 @@ class SimulationUpdate(LoginRequiredMixin, UpdateView):
     model = Simulation
     fields = '__all__'
     success_url = reverse_lazy('simulations')
-    '''
-    fields = ['chassis_name', 'description', 'front_wing_name', 'rear_wing_name',
-              'sidepod_name', 'diffuser_name', 'undertray_name', 'nose_name', 'front_wing_df','rear_wing_df',
-              'sidepod_df', 'diffuser_df', 'undertray_df', 'nose_df', 'front_wing_drag',
-              'rear_wing_drag','sidepod_drag', 'diffuser_drag', 'undertray_drag', 'nose_drag']
-              '''
+
 
 class SimulationCreate(FormView):
     context_object_name = 'simulation'
@@ -83,8 +78,6 @@ class SimulationCreate(FormView):
             general = handle_uploaded_file.main(self.request.FILES["general"])[0].split(';')
             df = handle_uploaded_file.main(self.request.FILES["df"])
             drag = handle_uploaded_file.main(self.request.FILES["drag"])
-
-            # TODO - check this three or four times!!!!!
 
             form.forms['df'].instance.body = round(float(df[1]), 2)
             form.forms['df'].instance.diffuser = round(float(df[2]), 2)
@@ -105,6 +98,12 @@ class SimulationCreate(FormView):
             form.forms['drag'].instance.wheel_front = round(float(drag[7]), 2)
             form.forms['drag'].instance.wheel_rear = round(float(drag[8]), 2)
             form.forms['drag'].instance.total = round(float(drag[9]), 2)
+
+            balance = round(float(general[1]), 2)
+            massflow = round(float(general[2]), 2)
+        else:
+            balance = None  # TODO - add to form
+            massflow = None
 
         form.forms['drag'].instance.type = Type.objects.get(type='drag')
         form.forms['df'].instance.type = Type.objects.get(type='df')
@@ -131,7 +130,7 @@ class SimulationCreate(FormView):
 
         main_v = re.search('\D+', self.request.POST['sim_name'])
         sub_v = re.search('\d+', self.request.POST['sim_name'])
-        # sub_form = form.save()
+
         chassis_form = Chassis(body=chassis_form['body'],
                                front_wing=chassis_form['front_wing'],
                                rear_wing=chassis_form['rear_wing'],
@@ -148,10 +147,11 @@ class SimulationCreate(FormView):
                                 df=df_form,
                                 drag=drag_form,
                                 chassis=chassis_form,
-                                balance=round(float(general[1]), 2),
-                                massflow=round(float(general[2]), 2))
+                                balance=balance,
+                                massflow=massflow)
         # TODO - handle user
         # TODO - handle parent simulation
+        # TODO - better handle regexes
 
-        simulation.save()
+        simulation.save()  # TODO - why it overwrites model with the same main_v but doesnt work for model forms
         return super(SimulationCreate, self).form_valid(form)
