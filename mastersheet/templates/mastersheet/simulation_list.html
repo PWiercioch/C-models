@@ -1,6 +1,7 @@
 {% extends 'mastersheet/main.html' %}
 {% block content %}
 
+
 <div class="header-bar">
     <div>
         <h1>C-models mastersheet</h1>
@@ -23,83 +24,56 @@
     <a id='add-link' href="{% url 'simulation-create' %}">&#9998;</a>
 </div>
 
-<div class="simulation-items-wrapper">
-    <div class="simulation-header">
-        <div class="simulation-detail">
-        Body
-        </div>
-        <div class="simulation-detail">
-        Front Wing
-        </div>
-        <div class="simulation-detail">
-        Rear Wing
-        </div>
-        <div class="simulation-detail">
-        Sidepod
-        </div>
-        <div class="simulation-detail">
-        Diffuser
-        </div>
-        <div class="simulation-detail">
-        Suspension
-        </div>
-        <div class="simulation-detail">
-        Downforce
-        </div>
-        <div class="simulation-detail">
-        Drag
-        </div>
-        <div class="simulation-detail">
-        Balance
-        </div>
-        <div class="simulation-detail">
-        HE - massflow
-        </div>
+    <div>
+        <table>
+            <tbody id="simulation_table">
+                <tr>
+                    <td>Body</td>
+                    <td>Front Wing</td>
+                    <td>Rear Wing</td>
+                    <td>Sidepod</td>
+                    <td>Diffuser</td>
+                    <td>Suspension</td>
+                    <td>Downforce</td>
+                    <td>Drag</td>
+                    <td>Balance</td>
+                    <td>HE - massflow</td>
+                </tr>
+                {% for simulation in object_list %}
+                    <tr>
+                        <td>
+                            <div class="simulation-icon"></div>
+                            <a href="{% url 'simulation'  simulation.slug %}">C_{{simulation}}</a>
+                        </td>
+                        <td>{{simulation.chassis.body}}</td>
+                        <td>{{simulation.chassis.front_wing}}</td>
+                        <td>{{simulation.chassis.rear_wing}}</td>
+                        <td>{{simulation.chassis.sidepod}}</td>
+                        <td>{{simulation.chassis.diffuser}}</td>
+                        <td>{{simulation.chassis.suspension}}</td>
+                        <td>{{simulation.df.total}}</td>
+                        <td>{{simulation.drag.total}}</td>
+                        <td>{{simulation.balance}}</td>
+                        <td>{{simulation.massflow}}</td>
+                        <td>
+                            <a id='edit-link' href="{% url 'simulation-update' simulation.slug %}">&#9850;</a>
+                        </td>
+                        <td>
+                            <a class='delete-link' href="{% url 'simulation-delete' simulation.slug %}">&#9760;</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                <div class="simulation-title">No simulations</div>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    {% for simulation in object_list %}
-        <div class="simulation-wrapper">
-            <div class="simulation-title">
-                <div class="simulation-icon"></div>
-                <a href="{% url 'simulation'  simulation.slug %}">C_{{simulation}}</a>
-            </div>
-            <div class="simulation-detail">
-                <div class="simulation-detail">
-                B_{{simulation.chassis.body}}
-                </div>
-                <div class="simulation-detail">
-                FW_{{simulation.chassis.front_wing}}
-                </div>
-                <div class="simulation-detail">
-                RW_{{simulation.chassis.rear_wing}}
-                </div>
-                <div class="simulation-detail">
-                S_{{simulation.chassis.sidepod}}
-                </div>
-                <div class="simulation-detail">
-                D_{{simulation.chassis.diffuser}}
-                </div>
-                <div class="simulation-detail">
-                SU_{{simulation.chassis.suspension}}
-                </div>
-                <div class="simulation-detail">
-                {{simulation.df.total}}
-                </div>
-                <div class="simulation-detail">
-                {{simulation.drag.total}}
-                </div>
-                <div class="simulation-detail">
-                {{simulation.balance}}
-                </div>
-                <div class="simulation-detail">
-                {{simulation.massflow}}
-                </div>
-            </div>
-            <a id='edit-link' href="{% url 'simulation-update' simulation.slug %}">&#9850;</a>
-            <a class='delete-link' href="{% url 'simulation-delete' simulation.slug %}">&#9760;</a>
-        </div>
-    {% empty %}
-    <div class="simulation-title">No simulations</div>
-    {% endfor %}
 </div>
 
 {% endblock content %}
+
+{% block scripts %}
+    {% load static %}
+    <script></script>
+    <script type="text/javascript" src="{% static 'js/simulation_list.js' %}"></script>
+{% endblock scripts%}

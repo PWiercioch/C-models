@@ -5,14 +5,6 @@
     <a href="{% url 'simulations' %}">&#8592; Back</a>
 </div>
 
-<!--<form method="POST" action="" enctype="multipart/form-data">-->
-<!--    {% csrf_token %}-->
-<!--    <b>Simulation Name</b>-->
-<!--    <input type="text" id="simulation_name" name="simulation_name">-->
-<!--    {{ form }}-->
-<!--    <input class="button" type="submit" value="Submit">&ndash;&gt;-->
-<!--</form>-->
-
 <div class="card-body">
 <form method="POST" action="" enctype="multipart/form-data">
         <form method="POST" action="" enctype="multipart/form-data">
@@ -42,101 +34,91 @@
     </form>
 </div>
 
+{% endblock content %}
 
-<script>
-    var read_file = document.getElementById("read");
-    var columns = document.getElementById("columns");
-    var files = document.getElementById("files");
+{% block scripts %}
+    {% load static %}
+<!--- TODO do it in a nice way - find what is exactly sotred in a form attribute--->
+    <script type="text/javascript">
+        var read_file = document.getElementById("read");
+        var columns = document.getElementById("columns");
+        var files = document.getElementById("files");
 
-    const names_div = '<div class="column" id="names">' +
-                '<b>Body name</b>' +
-                '<div class="form-name">' +
-                '{{form.chassis.body.main_v}}{{form.chassis.body.sub_v}}' + '{{ form.chassis.body.main_v.errors }}' +
-                '</div>' +
-                '<b>Front wing name</b>' +
-                '<div class="form-name">' +
-                '{{form.chassis.front_wing.main_v}}{{form.chassis.front_wing.sub_v}}' +
-                '</div>' +
-                '<b>Rear wing name</b>' +
-                '<div class="form-name">' +
-                '{{form.chassis.rear_wing.main_v}}{{form.chassis.rear_wing.sub_v}}' +
-                '</div>' +
-                '<b>Sidepod name</b>' +
-                '<div class="form-name">' +
-                '{{form.chassis.sidepod.main_v}}{{form.chassis.sidepod.sub_v}}' +
-                '</div>' +
-                '<b>Diffuser name</b>' +
-                '<div class="form-name">' +
-                '{{form.chassis.diffuser.main_v}}{{form.chassis.diffuser.sub_v}}' +
-                '</div>' +
-                '<b>Suspension name</b>' +
-                '<div class="form-name">' +
-                '{{form.chassis.suspension.main_v}}{{form.chassis.suspension.sub_v}}' +
-                '</div>' +
-                '<b>Front wheel name</b>' +
-                '<div class="form-name">' +
-                '{{form.chassis.wheel_front.main_v}}{{form.chassis.wheel_front.sub_v}}' +
-                '</div>' +
-                '<b>Rear wheel name</b>' +
-                '<div class="form-name">' +
-                '{{form.chassis.wheel_rear.main_v}}{{form.chassis.wheel_rear.sub_v}}' +
-                '</div>' +
-            '</div>'
+        const names_div = '<div class="column" id="names">' +
+                    '<b>Body name</b>' +
+                    '<div class="form-name">' +
+                    '{{form.chassis.body.main_v}}{{form.chassis.body.sub_v}}' + '{{ form.chassis.body.main_v.errors }}' +
+                    '</div>' +
+                    '<b>Front wing name</b>' +
+                    '<div class="form-name">' +
+                    '{{form.chassis.front_wing.main_v}}{{form.chassis.front_wing.sub_v}}' +
+                    '</div>' +
+                    '<b>Rear wing name</b>' +
+                    '<div class="form-name">' +
+                    '{{form.chassis.rear_wing.main_v}}{{form.chassis.rear_wing.sub_v}}' +
+                    '</div>' +
+                    '<b>Sidepod name</b>' +
+                    '<div class="form-name">' +
+                    '{{form.chassis.sidepod.main_v}}{{form.chassis.sidepod.sub_v}}' +
+                    '</div>' +
+                    '<b>Diffuser name</b>' +
+                    '<div class="form-name">' +
+                    '{{form.chassis.diffuser.main_v}}{{form.chassis.diffuser.sub_v}}' +
+                    '</div>' +
+                    '<b>Suspension name</b>' +
+                    '<div class="form-name">' +
+                    '{{form.chassis.suspension.main_v}}{{form.chassis.suspension.sub_v}}' +
+                    '</div>' +
+                    '<b>Front wheel name</b>' +
+                    '<div class="form-name">' +
+                    '{{form.chassis.wheel_front.main_v}}{{form.chassis.wheel_front.sub_v}}' +
+                    '</div>' +
+                    '<b>Rear wheel name</b>' +
+                    '<div class="form-name">' +
+                    '{{form.chassis.wheel_rear.main_v}}{{form.chassis.wheel_rear.sub_v}}' +
+                    '</div>' +
+                '</div>'
 
-        const df_div = '<div class="column" id="df">' +
-                '<b>Body df</b>' +
-                '{{form.df.body}}' +
-                '<b>Front wing df</b>' +
-                '{{form.df.front_wing}}' +
-                '<b>Rear wing df</b>' +
-                '{{form.df.rear_wing}}' +
-                '<b>Sidepod df</b>' +
-                '{{form.df.sidepod}}' +
-                '<b>Diffuser df</b>' +
-                '{{form.df.diffuser}}' +
-                '<b>Suspension df</b>' +
-                '{{form.df.suspension}}' +
-                '<b>Front wheel df</b>' +
-                '{{form.df.wheel_front}}' +
-                '<b>Rear wheel df</b>' +
-                '{{form.df.wheel_rear}}' +
-            '</div>';
+            const df_div = '<div class="column" id="df">' +
+                    '<b>Body df</b>' +
+                    '{{form.df.body}}' +
+                    '<b>Front wing df</b>' +
+                    '{{form.df.front_wing}}' +
+                    '<b>Rear wing df</b>' +
+                    '{{form.df.rear_wing}}' +
+                    '<b>Sidepod df</b>' +
+                    '{{form.df.sidepod}}' +
+                    '<b>Diffuser df</b>' +
+                    '{{form.df.diffuser}}' +
+                    '<b>Suspension df</b>' +
+                    '{{form.df.suspension}}' +
+                    '<b>Front wheel df</b>' +
+                    '{{form.df.wheel_front}}' +
+                    '<b>Rear wheel df</b>' +
+                    '{{form.df.wheel_rear}}' +
+                '</div>';
 
-        const drag_div =  '<div class="column" id="drag">' +
-                '<b>Body drag</b>' +
-                '{{form.drag.body}}' +
-                '<b>Front wing drag</b>' +
-                '{{form.drag.front_wing}}' +
-                '<b>Rear wing drag</b>' +
-                '{{form.drag.rear_wing}}' +
-                '<b>Sidepod drag</b>' +
-                '{{form.drag.sidepod}}' +
-                '<b>Diffuser drag</b>' +
-                '{{form.drag.diffuser}}' +
-                '<b>Suspension drag</b>' +
-                '{{form.drag.suspension}}' +
-                '<b>Front wheel drag</b>' +
-                '{{form.drag.wheel_front}}' +
-                '<b>Rear wheel drag</b>' +
-                '{{form.drag.wheel_rear}}' +
-            '</div>'
+            const drag_div =  '<div class="column" id="drag">' +
+                    '<b>Body drag</b>' +
+                    '{{form.drag.body}}' +
+                    '<b>Front wing drag</b>' +
+                    '{{form.drag.front_wing}}' +
+                    '<b>Rear wing drag</b>' +
+                    '{{form.drag.rear_wing}}' +
+                    '<b>Sidepod drag</b>' +
+                    '{{form.drag.sidepod}}' +
+                    '<b>Diffuser drag</b>' +
+                    '{{form.drag.diffuser}}' +
+                    '<b>Suspension drag</b>' +
+                    '{{form.drag.suspension}}' +
+                    '<b>Front wheel drag</b>' +
+                    '{{form.drag.wheel_front}}' +
+                    '<b>Rear wheel drag</b>' +
+                    '{{form.drag.wheel_rear}}' +
+                '</div>'
 
         columns.innerHTML = names_div + df_div + drag_div;
         files.style.visibility = "hidden";
-
-    function hideContent()
-    {
-        if (read_file.checked) {
-            columns.innerHTML = names_div;
-            hidden = true;
-            files.style.visibility = "visible";
-        }
-        else {
-            columns.innerHTML = names_div + df_div + drag_div;
-            hidden = false;
-            files.style.visibility = "hidden";
-        }
-    }
-</script>
-
-{% endblock content %}
+    </script>
+    <script src="{% static 'js/simulation_form.js' %}"></script>
+{% endblock scripts %}

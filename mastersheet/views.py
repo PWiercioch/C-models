@@ -4,6 +4,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.urls import reverse_lazy
 from django.http import request
 
+from django.core import serializers
+
 from django.contrib.auth.views import LoginView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +29,8 @@ class CustomLoginView(LoginView):
 class SimulationList(ListView):
     template_name = 'mastersheet/simulation_list.html'
     model = Simulation
+    chassis_model = Chassis
+    chassis_data = serializers.serialize("python", chassis_model.objects.all())
 
     # TODO - handle search
 
@@ -69,6 +73,7 @@ class SimulationUpdate(LoginRequiredMixin, UpdateView):
 
 class SimulationCreate(FormView):
     context_object_name = 'simulation'
+    # TODO - will forms be necessary or should I just do it with models directly
     form_class = SimulationMultiForm
     template_name = 'mastersheet/simulation_form.html'
     success_url = reverse_lazy('simulations')

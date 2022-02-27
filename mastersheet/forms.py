@@ -27,7 +27,7 @@ class PartForm(forms.ModelForm):
 
     class Meta:
         model = Part
-        fields = '__all__'
+        fields = ['main_v', 'sub_v']
 
         widgets = {
             'main_v': forms.TextInput(
