@@ -25,9 +25,10 @@
 </div>
 
     <div>
-        <table>
-            <tbody id="simulation_table">
+        <table class="table">
+            <thead>
                 <tr>
+                    <td>Simulation</td>
                     <td>Body</td>
                     <td>Front Wing</td>
                     <td>Rear Wing</td>
@@ -38,7 +39,11 @@
                     <td>Drag</td>
                     <td>Balance</td>
                     <td>HE - massflow</td>
+                    <td></td>
+                    <td></td>
                 </tr>
+            </thead>
+            <tbody id="simulation_table">
                 {% for simulation in object_list %}
                     <tr>
                         <td>
