@@ -84,6 +84,7 @@ class SimulationCreate(FormView):
             df = handle_uploaded_file.main(self.request.FILES["df"])
             drag = handle_uploaded_file.main(self.request.FILES["drag"])
 
+            # TODO - move to handle_upladed_file
             form.forms['df'].instance.body = round(float(df[1]), 2)
             form.forms['df'].instance.diffuser = round(float(df[2]), 2)
             form.forms['df'].instance.front_wing = round(float(df[3]), 2)
@@ -119,12 +120,17 @@ class SimulationCreate(FormView):
         deleted_forms = {}
         saved_forms = {}
         for part_form in form.forms['chassis'].forms:
+            # TODO - make it a global regex, handle prefix
+            main_v = re.search('^[A-Za-z]', form.data[f"{part_form}__chassis-full_name"])
+            sub_v = re.search('\d+$', form.data[f"{part_form}__chassis-full_name"])
             try:
                 deleted_forms[part_form] = Part.objects.get(type=Type.objects.get(type=part_form),
-                                    main_v=form.forms['chassis'].forms[part_form].instance.main_v,
-                                    sub_v=form.forms['chassis'].forms[part_form].instance.sub_v)
+                                    main_v=main_v.group(),
+                                    sub_v=sub_v.group())
             except:
                 form.forms['chassis'].forms[part_form].instance.type = Type.objects.get(type=part_form)
+                form.forms['chassis'].forms[part_form].instance.main_v = main_v.group()
+                form.forms['chassis'].forms[part_form].instance.sub_v = sub_v.group()
                 saved_forms[part_form] = form.forms['chassis'].forms[part_form]
 
         saved_forms = form.forms['chassis'].save()
@@ -133,6 +139,7 @@ class SimulationCreate(FormView):
         chassis_form.update(saved_forms)
         chassis_form.update(deleted_forms)
 
+        # TODO - add simulation name in form
         main_v = re.search('\D+', self.request.POST['sim_name'])
         sub_v = re.search('\d+', self.request.POST['sim_name'])
 
@@ -157,6 +164,8 @@ class SimulationCreate(FormView):
         # TODO - handle user
         # TODO - handle parent simulation
         # TODO - better handle regexes
+        # TODO - add simulation state
+        # TODO - add picture
 
         simulation.save()  # TODO - why it overwrites model with the same main_v but doesnt work for model forms
         return super(SimulationCreate, self).form_valid(form)

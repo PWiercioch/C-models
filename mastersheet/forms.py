@@ -13,32 +13,31 @@ class ForceForm(forms.ModelForm):
         model = Force
         fields = ['body', 'front_wing', 'rear_wing', 'sidepod', 'diffuser', 'suspension', 'wheel_front', 'wheel_rear']
 
+# TODO - will clean works also with normal Form??
 class PartForm(forms.ModelForm):
-    def clean(self):  # allows to validate at the deeper level - check if already exists in db
-        # raise forms.ValidationError({"main_v": "error"})
-        pass
-        cleaned_data = super(PartForm, self).clean()
-        # main_v = self.cleaned_data.get('main_v')
-        # try:
-        #     # match = Part.objects.get(main_v=main_v)
-        #     raise forms.ValidationError({"main_v": "error"})
-        # except Part.DoesNotExist:
-        #     return main_v
+    # TODO - add custom error messages
+    full_name = forms.CharField(label='test', max_length=100, widget=forms.TextInput(attrs={'placeholder': 'test', 'required pattern': '[A-Za-z]{1}_\d+'}))
+
+    # def clean(self):  # allows to validate at the deeper level - check if already exists in db
+    #     return self.cleaned_data
+    #     # raise forms.ValidationError({"full_name": "error"})
+    #     cleaned_data = super(PartForm, self).clean()
+    #     # main_v = self.cleaned_data.get('main_v')
+    #     # try:
+    #     #     # match = Part.objects.get(main_v=main_v)
+    #     #     raise forms.ValidationError({"main_v": "error"})
+    #     # except Part.DoesNotExist:
+    #     #     return main_v
 
     class Meta:
         model = Part
-        fields = ['main_v', 'sub_v']
-
-        widgets = {
-            'main_v': forms.TextInput(
-                attrs={
-                    'placeholder': 'dupa',
-                    'oninvalid': "this.setCustomValidity('Cos nie pyklo kurwa')",  # sets custom error message
-                    'oninput': "this.setCustomValidity('')",  # hides error message on input
-                    'minlength': '2'  # allows to add aditional validators
-                },
-            ),
-        }
+        fields = ['full_name']
+    #
+    #     error_messages = {  # TODO - this should work
+    #         'full_name': {
+    #             'required': ("This writer's name is too long."),
+    #         },
+    #     }
 
 class TypeForm(forms.ModelForm):
     class Meta:
