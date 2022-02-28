@@ -5,25 +5,45 @@
     <a href="{% url 'simulations' %}">&#8592; Back</a>
 </div>
 
+{{ form.errors }}
+
 <div class="card-body">
 <form method="POST" action="" enctype="multipart/form-data">
-        <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="info_section">
             <div class="row">
                 <b>Simulation Name</b>
-                <input type="text" name="sim_name">
+               {{ form.simulation.full_name }}
             </div>
             <div class="row">
                 <b>Description</b>
-                <textarea name="Description"></textarea>
+               {{ form.simulation.description }}
             </div>
             <div class="row">
                 <b></b>
                 <p><label><input type="checkbox" id="read" name="Read" onclick="hideContent()">Read from file</label></p>
             </div>
         </div>
+
         <!--- TODO do it in a nice way - iterate over a form.chassis - maybe some vars in view.py??-->
+        <div class="data_section" id="general_info">
+            <div>
+                <b>Total df</b>
+                {{ form.df.total }}
+            </div>
+            <div>
+                <b>Total drag</b>
+                {{ form.drag.total }}
+            </div>
+            <div>
+                <b>Balance</b>
+                {{ form.simulation.balance }}
+            </div>
+            <div>
+                <b>HE Massflow</b>
+                {{ form.simulation.massflow }}
+            </div>
+        </div>
         <div class="data_section" id="columns">
             <div class="column" id="names">
                 <b>Body name</b>

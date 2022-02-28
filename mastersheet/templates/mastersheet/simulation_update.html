@@ -1,0 +1,129 @@
+{% extends 'mastersheet/main.html' %}
+{% block content %}
+<div class="header-bar">
+    <h3>Simulation</h3>
+    <a href="{% url 'simulations' %}">&#8592; Back</a>
+</div>
+
+<div class="card-body">
+<form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+<!--        <div class="info_section">-->
+<!--            <div class="row">-->
+<!--                <b>Simulation Name</b>-->
+<!--               {{ object_list.simulation.full_name }}-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--                <b>Description</b>-->
+<!--               {{ object_list.simulation.description }}-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--                <b></b>-->
+<!--                <p><label><input type="checkbox" id="read" name="Read" onclick="hideContent()">Read from file</label></p>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash;- TODO do it in a nice way - iterate over a form.chassis - maybe some vars in view.py??&ndash;&gt;-->
+<!--        <div class="data_section" id="general_info">-->
+<!--            <div>-->
+<!--                <b>Total df</b>-->
+<!--                {{ object_list.df.total }}-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <b>Total drag</b>-->
+<!--                {{ object_list.drag.total }}-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <b>Balance</b>-->
+<!--                {{ object_list.simulation.balance }}-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <b>HE Massflow</b>-->
+<!--                {{ object_list.simulation.massflow }}-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="data_section" id="columns">-->
+<!--            <div class="column" id="names">-->
+<!--                <b>Body name</b>-->
+<!--                <div class="form-name">-->
+<!--                {{ object_list.chassis.body.full_name.errors }} {{ object_list.chassis.body.full_name }}-->
+<!--                </div>-->
+<!--                <b>Front wing name</b>-->
+<!--                <div class="form-name">-->
+<!--                {{object_list.chassis.front_wing.full_name.errors}} {{ object_list.chassis.front_wing.full_name }}-->
+<!--                </div>-->
+<!--                <b>Rear wing name</b>-->
+<!--                <div class="form-name">-->
+<!--                {{object_list.chassis.rear_wing.full_name.errors}} {{ object_list.chassis.rear_wing.full_name }}-->
+<!--                </div>-->
+<!--                <b>Sidepod name</b>-->
+<!--                <div class="form-name">-->
+<!--                {{object_list.chassis.sidepod.full_name.errors}} {{ object_list.chassis.sidepod.full_name }}-->
+<!--                </div>-->
+<!--                <b>Diffuser name</b>-->
+<!--                <div class="form-name">-->
+<!--                {{object_list.chassis.diffuser.full_name.errors}} {{ object_list.chassis.diffuser.full_name }}-->
+<!--                </div>-->
+<!--                <b>Suspension name</b>-->
+<!--                <div class="form-name">-->
+<!--                {{object_list.chassis.suspension.full_name.errors}} {{ object_list.chassis.suspension.full_name }}-->
+<!--                </div>-->
+<!--                <b>Front wheel name</b>-->
+<!--                <div class="form-name">-->
+<!--                {{object_list.chassis.wheel_front.full_name.errors}} {{ object_list.chassis.wheel_front.full_name }}-->
+<!--                </div>-->
+<!--                <b>Rear wheel name</b>-->
+<!--                <div class="form-name">-->
+<!--                {{form.chassis.wheel_rear.full_name.errors}} {{ object_list.chassis.wheel_rear.full_name }}-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="column" id="df">-->
+<!--                <b>Body df</b>-->
+<!--                {{object_list.df.body}}-->
+<!--                <b>Front wing df</b>-->
+<!--                {{object_list.df.front_wing}}-->
+<!--                <b>Rear wing df</b>-->
+<!--                {{object_list.df.rear_wing}}-->
+<!--                <b>Sidepod df</b>-->
+<!--                {{object_list.df.sidepod}}-->
+<!--                <b>Diffuser df</b>-->
+<!--                {{object_list.df.diffuser}}-->
+<!--                <b>Suspension df</b>-->
+<!--                {{object_list.df.suspension}}-->
+<!--                <b>Front wheel df</b>-->
+<!--                {{object_list.df.wheel_front}}-->
+<!--                <b>Rear wheel df</b>-->
+<!--                {{object_list.df.wheel_rear}}-->
+<!--            </div>-->
+<!--            <div class="column" id="drag">-->
+<!--                <b>Body drag</b>-->
+<!--                {{object_list.drag.body}}-->
+<!--                <b>Front wing drag</b>-->
+<!--                {{object_list.drag.front_wing}}-->
+<!--                <b>Rear wing drag</b>-->
+<!--                {{object_list.drag.rear_wing}}-->
+<!--                <b>Sidepod drag</b>-->
+<!--                {{object_list.drag.sidepod}}-->
+<!--                <b>Diffuser drag</b>-->
+<!--                {{object_list.drag.diffuser}}-->
+<!--                <b>Suspension drag</b>-->
+<!--                {{object_list.drag.suspension}}-->
+<!--                <b>Front wheel drag</b>-->
+<!--                {{object_list.drag.wheel_front}}-->
+<!--                <b>Rear wheel drag</b>-->
+<!--                {{object_list.drag.wheel_rear}}-->
+<!--            </div>-->
+<!--        </div>-->
+    <div>
+        <input class="button" type="submit" value="Submit">
+    </div>
+    </form>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+    {% load static %}
+<!--    <script src="{% static 'js/simulation_form.js' %}"></script>-->
+{% endblock scripts %}

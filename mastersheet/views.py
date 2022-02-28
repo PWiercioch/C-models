@@ -3,6 +3,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
 from django.http import request
+from django.views.generic import edit as edit
 
 from django.core import serializers
 
@@ -14,7 +15,7 @@ from .models import Simulation, Chassis, Part, Type
 
 from . import handle_uploaded_file
 
-from .forms import SimulationMultiForm
+from .forms import SimulationMultiForm, PartForm
 
 import re
 
@@ -68,12 +69,26 @@ class SimulationDelete(LoginRequiredMixin, DeleteView):
 class SimulationUpdate(LoginRequiredMixin, UpdateView):
     model = Simulation
     fields = '__all__'
+    context_object_name = 'simulation'
+    template_name = 'mastersheet/simulation_update.html'
     success_url = reverse_lazy('simulations')
+
+    def get_context_data(self, **kwargs):
+        # TODO get a submodel in the context - render in a template
+        body = Part.objects.get(id=self.object.chassis.body_id)
+        test = edit.model_forms.modelform_factory(Part, fields=['main_v', 'sub_v'])(**self.get_form_kwargs())
+        test.instance = body
+        context = super(SimulationUpdate, self).get_context_data(**kwargs)
+        context['part_form'] = test
+        return context
+
+    def form_valid(self, form):
+        # TODO handle updating submodel
+        return super(SimulationUpdate, self).form_valid(form)
 
 
 class SimulationCreate(FormView):
     context_object_name = 'simulation'
-    # TODO - will forms be necessary or should I just do it with models directly
     form_class = SimulationMultiForm
     template_name = 'mastersheet/simulation_form.html'
     success_url = reverse_lazy('simulations')
@@ -108,8 +123,9 @@ class SimulationCreate(FormView):
             balance = round(float(general[1]), 2)
             massflow = round(float(general[2]), 2)
         else:
-            balance = None  # TODO - add to form
-            massflow = None
+            balance = form.data["simulation-balance"]
+            massflow = form.data["simulation-massflow"]
+
 
         form.forms['drag'].instance.type = Type.objects.get(type='drag')
         form.forms['df'].instance.type = Type.objects.get(type='df')
@@ -117,31 +133,31 @@ class SimulationCreate(FormView):
         drag_form = form.forms['drag'].save()
         df_form = form.forms['df'].save()
 
+        nameRegEx = re.compile("^(([A-Za-z]*)_)?([A-Za-z])_(\d+)$")
+
         deleted_forms = {}
         saved_forms = {}
         for part_form in form.forms['chassis'].forms:
-            # TODO - make it a global regex, handle prefix
-            main_v = re.search('^[A-Za-z]', form.data[f"{part_form}__chassis-full_name"])
-            sub_v = re.search('\d+$', form.data[f"{part_form}__chassis-full_name"])
+            part_version = re.search(nameRegEx, form.data[f"{part_form}__chassis-full_name"])
             try:
                 deleted_forms[part_form] = Part.objects.get(type=Type.objects.get(type=part_form),
-                                    main_v=main_v.group(),
-                                    sub_v=sub_v.group())
+                                    main_v=part_version.group(3),
+                                    sub_v=part_version.group(4))
             except:
                 form.forms['chassis'].forms[part_form].instance.type = Type.objects.get(type=part_form)
-                form.forms['chassis'].forms[part_form].instance.main_v = main_v.group()
-                form.forms['chassis'].forms[part_form].instance.sub_v = sub_v.group()
+                form.forms['chassis'].forms[part_form].instance.main_v = part_version.group(3)
+                form.forms['chassis'].forms[part_form].instance.sub_v = part_version.group(4)
                 saved_forms[part_form] = form.forms['chassis'].forms[part_form]
 
-        saved_forms = form.forms['chassis'].save()
+        if saved_forms:
+            for p_form in saved_forms.values():
+                p_form.save()
 
         chassis_form = {}
         chassis_form.update(saved_forms)
         chassis_form.update(deleted_forms)
 
-        # TODO - add simulation name in form
-        main_v = re.search('\D+', self.request.POST['sim_name'])
-        sub_v = re.search('\d+', self.request.POST['sim_name'])
+        sim_version = re.search(nameRegEx, form.data["simulation-full_name"])
 
         chassis_form = Chassis(body=chassis_form['body'],
                                front_wing=chassis_form['front_wing'],
@@ -152,10 +168,10 @@ class SimulationCreate(FormView):
                                wheel_front=chassis_form['wheel_front'],
                                wheel_rear=chassis_form['wheel_rear'])
         chassis_form.save()
-        simulation = Simulation(main_v=main_v.group().strip('_'),
-                                sub_v=sub_v.group(),
-                                description=self.request.POST['Description'],
-                                slug=main_v.group().strip('_') + '-' + str(sub_v.group()),
+        simulation = Simulation(main_v=sim_version.group(3),
+                                sub_v=sim_version.group(4),
+                                description=form.data["simulation-description"],
+                                slug=sim_version.group(3) + '-' + str(sim_version.group(4)),
                                 df=df_form,
                                 drag=drag_form,
                                 chassis=chassis_form,
@@ -167,5 +183,5 @@ class SimulationCreate(FormView):
         # TODO - add simulation state
         # TODO - add picture
 
-        simulation.save()  # TODO - why it overwrites model with the same main_v but doesnt work for model forms
+        simulation.save()
         return super(SimulationCreate, self).form_valid(form)

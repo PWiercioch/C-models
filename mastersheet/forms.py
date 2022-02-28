@@ -11,7 +11,7 @@ class ChassisForm(forms.ModelForm):
 class ForceForm(forms.ModelForm):
     class Meta:
         model = Force
-        fields = ['body', 'front_wing', 'rear_wing', 'sidepod', 'diffuser', 'suspension', 'wheel_front', 'wheel_rear']
+        fields = '__all__'
 
 # TODO - will clean works also with normal Form??
 class PartForm(forms.ModelForm):
@@ -56,8 +56,17 @@ class ChassisMultiForm(MultiModelForm):
         'wheel_rear': PartForm,
     }
 
+class SimulationForm(forms.Form):
+    full_name = forms.CharField(label='test', max_length=100, widget=forms.TextInput(
+        attrs={'placeholder': 'test', 'required pattern': '[A-Za-z]{1}_\d+'}))
+    description = forms.CharField(widget=forms.Textarea)
+    balance = forms.FloatField()
+    massflow = forms.FloatField()
+
 class SimulationMultiForm(MultiModelForm):
+
     form_classes = {
+        'simulation': SimulationForm,
         'chassis': ChassisMultiForm,
         'df': ForceForm,
         'drag': ForceForm,
