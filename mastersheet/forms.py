@@ -59,9 +59,16 @@ class ChassisMultiForm(MultiModelForm):
 class SimulationForm(forms.Form):
     full_name = forms.CharField(label='test', max_length=100, widget=forms.TextInput(
         attrs={'placeholder': 'test', 'required pattern': '[A-Za-z]{1}_\d+'}))
-    description = forms.CharField(widget=forms.Textarea)
-    balance = forms.FloatField()
-    massflow = forms.FloatField()
+    description = forms.CharField(widget=forms.Textarea, required=False)
+    balance = forms.FloatField(required=False)
+    massflow = forms.FloatField(required=False)
+
+    class Meta:
+        error_messages = {  # TODO - this should work
+            'full_name': {
+                'required': ("This writer's name is too long."),
+            },
+        }
 
 class SimulationMultiForm(MultiModelForm):
 

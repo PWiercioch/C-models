@@ -95,7 +95,7 @@ class SimulationCreate(FormView):
 
     def form_valid(self, form):
         if self.request.POST.get('Read'):
-            general = handle_uploaded_file.main(self.request.FILES["general"])[0].split(';')
+            general = handle_uploaded_file.main(self.request.FILES["general"])
             df = handle_uploaded_file.main(self.request.FILES["df"])
             drag = handle_uploaded_file.main(self.request.FILES["drag"])
 
