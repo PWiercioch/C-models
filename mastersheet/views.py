@@ -30,10 +30,27 @@ class CustomLoginView(LoginView):
 class SimulationList(ListView):
     template_name = 'mastersheet/simulation_list.html'
     model = Simulation
+    context_object_name = 'simulations'
     chassis_model = Chassis
     chassis_data = serializers.serialize("python", chassis_model.objects.all())
 
-    # TODO - handle search
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['simulations'] = context['simulations']  # .filter(user=self.request.user) - to get the user simulations
+        # context['simulations'] = context['simulations'].filter(complete=False)
+        search_input = self.request.GET.get('search-area') or ''
+        if search_input:
+            search_RegEx = re.compile("^(([A-Za-z]*)_)?([A-Za-z])?(_)?(\d+)?$")
+            pattern = re.search(search_RegEx, search_input)
+            if pattern.group(3):
+                context['simulations'] = context['simulations'].filter(main_v=pattern.group(3))
+            if pattern.group(5):
+                context['simulations'] = context['simulations'].filter(sub_v__startswith=pattern.group(5))
+
+        context['count'] = context['simulations'].count()
+        context['search_input'] = search_input
+
+        return context
 
 
 class SimulationList2(LoginRequiredMixin, ListView):
@@ -171,6 +188,7 @@ class SimulationCreate(FormView):
         simulation = Simulation(main_v=sim_version.group(3),
                                 sub_v=sim_version.group(4),
                                 description=form.data["simulation-description"],
+                                post_processing=form.data["post_processing"],
                                 slug=sim_version.group(3) + '-' + str(sim_version.group(4)),
                                 df=df_form,
                                 drag=drag_form,

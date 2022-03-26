@@ -57,6 +57,7 @@ class Simulation(models.Model):
     main_v = models.CharField(max_length=10)
     sub_v = models.IntegerField()
     description = models.TextField(null=True, blank=True)
+    post_processing = models.CharField(max_length=500, null=True, blank=True)
     slug = models.SlugField(primary_key=True)
 
     df = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True, null=True, related_name='df')

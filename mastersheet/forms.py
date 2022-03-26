@@ -16,7 +16,8 @@ class ForceForm(forms.ModelForm):
 # TODO - will clean works also with normal Form??
 class PartForm(forms.ModelForm):
     # TODO - add custom error messages
-    full_name = forms.CharField(label='test', max_length=100, widget=forms.TextInput(attrs={'placeholder': 'test', 'required pattern': '[A-Za-z]{1}_\d+'}))
+    full_name = forms.CharField(label='test', max_length=100, widget=forms.TextInput(
+        attrs={'placeholder': 'X_XX', 'required pattern': '[A-Za-z]{1}_\d+'}))
 
     # def clean(self):  # allows to validate at the deeper level - check if already exists in db
     #     return self.cleaned_data
@@ -58,17 +59,12 @@ class ChassisMultiForm(MultiModelForm):
 
 class SimulationForm(forms.Form):
     full_name = forms.CharField(label='test', max_length=100, widget=forms.TextInput(
-        attrs={'placeholder': 'test', 'required pattern': '[A-Za-z]{1}_\d+'}))
+        attrs={'placeholder': 'C_X_XX', 'required': True, 'required pattern': '[cC]_[A-Za-z]{1}_\d+'}))
     description = forms.CharField(widget=forms.Textarea, required=False)
+    post_processing = forms.CharField(max_length=500, required=False)
     balance = forms.FloatField(required=False)
     massflow = forms.FloatField(required=False)
 
-    class Meta:
-        error_messages = {  # TODO - this should work
-            'full_name': {
-                'required': ("This writer's name is too long."),
-            },
-        }
 
 class SimulationMultiForm(MultiModelForm):
 
