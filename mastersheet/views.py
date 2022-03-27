@@ -77,6 +77,13 @@ class SimulationList2(LoginRequiredMixin, ListView):
 
 class SimulationDetail(LoginRequiredMixin, DetailView):
     model = Simulation
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        parent = Simulation.objects.get(main_v=self.object.main_v, sub_v=self.object.sub_v).parent
+        if parent:
+            context['parent_slug'] = parent.slug
+        return context
+
 
 
 class SimulationDelete(LoginRequiredMixin, DeleteView):
@@ -112,6 +119,22 @@ class SimulationCreate(FormView):
     form_class = SimulationMultiForm
     template_name = 'mastersheet/simulation_form.html'
     success_url = reverse_lazy('simulations')
+
+    def get_initial(self):
+        initial = super(SimulationCreate, self).get_initial()
+        if self.kwargs['slug'] == "new":
+            return {}
+        parent = Simulation.objects.get(slug=self.kwargs['slug'])
+        initial['body'] = {"main_v": parent.chassis.body.main_v, 'sub_v': parent.chassis.body.sub_v}
+        initial['front_wing'] = {"main_v": parent.chassis.front_wing.main_v, 'sub_v': parent.chassis.front_wing.sub_v}
+        initial['rear_wing'] = {"main_v": parent.chassis.rear_wing.main_v, 'sub_v': parent.chassis.rear_wing.sub_v}
+        initial['sidepod'] = {"main_v": parent.chassis.sidepod.main_v, 'sub_v': parent.chassis.sidepod.sub_v}
+        initial['diffuser'] = {"main_v": parent.chassis.diffuser.main_v, 'sub_v': parent.chassis.diffuser.sub_v}
+        initial['suspension'] = {"main_v": parent.chassis.suspension.main_v, 'sub_v': parent.chassis.suspension.sub_v}
+        initial['wheel_front'] = {"main_v": parent.chassis.wheel_front.main_v, 'sub_v': parent.chassis.wheel_front.sub_v}
+        initial['wheel_rear'] = {"main_v": parent.chassis.wheel_rear.main_v, 'sub_v': parent.chassis.wheel_rear.sub_v}
+        return initial
+
 
     def form_valid(self, form):
         if self.request.POST.get('Read'):
@@ -188,6 +211,11 @@ class SimulationCreate(FormView):
                                wheel_front=chassis_form['wheel_front'],
                                wheel_rear=chassis_form['wheel_rear'])
         chassis_form.save()
+
+        if self.kwargs['slug'] != "new":
+            parent = Simulation.objects.get(slug=self.kwargs['slug'])
+        else:
+            parent = None
         simulation = Simulation(main_v=sim_version.group(3).upper(),
                                 sub_v=sim_version.group(4),
                                 description=form.data["simulation-description"],
@@ -197,7 +225,8 @@ class SimulationCreate(FormView):
                                 drag=drag_form,
                                 chassis=chassis_form,
                                 balance=balance,
-                                massflow=massflow)
+                                massflow=massflow,
+                                parent=parent)
         # TODO - handle user
         # TODO - handle parent simulation
         # TODO - better handle regexes

@@ -21,7 +21,7 @@
         <input type="text" name="search-area" value="{{search_input}}">
         <input class='button' type="submit" value="Search">
     </form>
-    <a id='add-link' href="{% url 'simulation-create' %}">&#9998;</a>
+    <a id='add-link' href="{% url 'simulation-create' 'new' %}">&#9998;</a>
 </div>
 
     <div>
@@ -61,10 +61,13 @@
                         <td>{{simulation.balance}}</td>
                         <td>{{simulation.massflow}}</td>
                         <td>
-                            <a id='edit-link' href="{% url 'simulation-update' simulation.slug %}">&#9850;</a>
+                            <a href="{% url 'simulation-create' simulation.slug %}">New Simualtion &#9998;</a>
                         </td>
                         <td>
-                            <a class='delete-link' href="{% url 'simulation-delete' simulation.slug %}">&#9760;</a>
+                            <a id='edit-link' href="{% url 'simulation-update' simulation.slug %}">Edit &#9998;</a>
+                        </td>
+                        <td>
+                            <a class='delete-link' href="{% url 'simulation-delete' simulation.slug %}">Delete &#9760;</a>
                         </td>
                     </tr>
                 {% empty %}

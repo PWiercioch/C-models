@@ -2,7 +2,17 @@
 {% block content %}
 
 <div class="header-bar">
-    <h1>Simulation: {{simulation}}</h1>
+    <div>
+        <h1>Simulation: {{simulation}}</h1>
+        <h3>Parent:
+        {% if simulation.parent %}
+            <a href="{% url 'simulation' parent_slug %}">{{simulation.parent}}</a>
+        {% else %}
+            None
+        {% endif %}
+        </h3>
+        <a href="{% url 'simulation-create' simulation.slug %}">New Simualtion &#9998;</a>
+    </div>
     <a href="{% url 'simulations' %}">&#8592; Back</a>
 </div>
 

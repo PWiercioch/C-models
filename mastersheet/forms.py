@@ -19,6 +19,10 @@ class PartForm(forms.ModelForm):
     full_name = forms.CharField(label='test', max_length=100, widget=forms.TextInput(
         attrs={'placeholder': 'X_XX', 'required pattern': '[A-Za-z]{1}_\d+'}))
 
+    # def __init__(self, *args, **kwargs):
+    #     print(f"{kwargs}")
+    #     super(PartForm, self).__init__(*args, **kwargs)
+
     # def clean(self):  # allows to validate at the deeper level - check if already exists in db
     #     return self.cleaned_data
     #     # raise forms.ValidationError({"full_name": "error"})
@@ -74,3 +78,11 @@ class SimulationMultiForm(MultiModelForm):
         'df': ForceForm,
         'drag': ForceForm,
     }
+
+    def __init__(self, *args, **kwargs):
+        super(SimulationMultiForm, self).__init__(*args, **kwargs)
+        for part, initial in kwargs['initial'].items():
+            if part == "prefix":
+                continue
+            self.forms['chassis'].forms[part].fields['full_name'].widget.attrs['value'] = f"{initial['main_v']}_{initial['sub_v']}"
+

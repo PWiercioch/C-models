@@ -8,7 +8,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='login'), name=('logout')),
     path('', SimulationList.as_view(), name='simulations'),
     path('simulation/<slug:slug>/', SimulationDetail.as_view(), name='simulation'),
-    path('simulation-create/', SimulationCreate.as_view(), name='simulation-create'),
+    path('simulation-create/<slug:slug>/', SimulationCreate.as_view(), name='simulation-create'),
     path('simulation-update/<slug:slug>/', SimulationUpdate.as_view(), name='simulation-update'),
     path('simulation-delete/<slug:slug>/', SimulationDelete.as_view(), name='simulation-delete'),
 ]
