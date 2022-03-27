@@ -4,6 +4,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.urls import reverse_lazy
 from django.http import request
 from django.views.generic import edit as edit
+from django.db.models import Q
 
 from django.core import serializers
 
@@ -44,6 +45,7 @@ class SimulationList(ListView):
             pattern = re.search(search_RegEx, search_input)
             if pattern.group(3):
                 context['simulations'] = context['simulations'].filter(main_v=pattern.group(3))
+
             if pattern.group(5):
                 context['simulations'] = context['simulations'].filter(sub_v__startswith=pattern.group(5))
 
@@ -158,17 +160,17 @@ class SimulationCreate(FormView):
             part_version = re.search(nameRegEx, form.data[f"{part_form}__chassis-full_name"])
             try:
                 deleted_forms[part_form] = Part.objects.get(type=Type.objects.get(type=part_form),
-                                    main_v=part_version.group(3),
+                                    main_v=part_version.group(3).upper(),
                                     sub_v=part_version.group(4))
             except:
                 form.forms['chassis'].forms[part_form].instance.type = Type.objects.get(type=part_form)
-                form.forms['chassis'].forms[part_form].instance.main_v = part_version.group(3)
+                form.forms['chassis'].forms[part_form].instance.main_v = part_version.group(3).upper()
                 form.forms['chassis'].forms[part_form].instance.sub_v = part_version.group(4)
                 saved_forms[part_form] = form.forms['chassis'].forms[part_form]
 
         if saved_forms:
-            for p_form in saved_forms.values():
-                p_form.save()
+            for id, p_form in saved_forms.items():
+                saved_forms[id] = p_form.save()
 
         chassis_form = {}
         chassis_form.update(saved_forms)
@@ -185,11 +187,11 @@ class SimulationCreate(FormView):
                                wheel_front=chassis_form['wheel_front'],
                                wheel_rear=chassis_form['wheel_rear'])
         chassis_form.save()
-        simulation = Simulation(main_v=sim_version.group(3),
+        simulation = Simulation(main_v=sim_version.group(3).upper(),
                                 sub_v=sim_version.group(4),
                                 description=form.data["simulation-description"],
-                                post_processing=form.data["post_processing"],
-                                slug=sim_version.group(3) + '-' + str(sim_version.group(4)),
+                                post_processing=form.data["simulation-post_processing"],
+                                slug=sim_version.group(3).upper() + '-' + str(sim_version.group(4)),
                                 df=df_form,
                                 drag=drag_form,
                                 chassis=chassis_form,

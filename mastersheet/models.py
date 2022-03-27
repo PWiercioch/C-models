@@ -1,4 +1,5 @@
 from django.db import models
+import re
 from django.core.exceptions import ValidationError
 from django import forms
 from django.contrib.auth.models import User
@@ -7,9 +8,10 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Type(models.Model):
     type = models.CharField(max_length=20)
+    abbreviation = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.type
+        return self.abbreviation
 
 
 class Part(models.Model):
