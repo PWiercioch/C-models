@@ -5,82 +5,73 @@
     <h1>Simulation: {{simulation}}</h1>
     <a href="{% url 'simulations' %}">&#8592; Back</a>
 </div>
-<!--- TODO in a loop!! - JS?--->
-<div class="simulation-title">
-    <h3>Downforce</h3>
+
+
+<div>
+    <div class="simulation-title"> <h3>Description</h3> </div>
+    <div class="simulation-2rows"> {{simulation.description}} </div>
 </div>
-<div class="simulation-detail">
-    <div class="simulation-2rows">
-        <b>U</b>
-        {{simulation.df.body}}
+
+
+<div>
+    <div class="simulation-title">
+        <h3>Parts</h3>
     </div>
-    <div class="simulation-2rows">
-        <b>FW</b>
-        {{simulation.df.front_wing}}
-    </div>
-    <div class="simulation-2rows">
-        <b>RW</b>
-        {{simulation.df.rear_wing}}
-    </div>
-    <div class="simulation-2rows">
-        <b>S</b>
-        {{simulation.df.sidepod}}
-    </div>
-    <div class="simulation-2rows">
-        <b>D</b>
-        {{simulation.df.diffuser}}
-    </div>
-    <div class="simulation-2rows">
-        <b>SU</b>
-        {{simulation.df.suspension}}
-    </div>
-    <div class="simulation-2rows">
-        <b>Front Wheel</b>
-        {{simulation.df.wheel_front}}
-    </div>
-    <div class="simulation-2rows">
-        <b>Rear Wheel</b>
-        {{simulation.df.wheel_rear}}
+    <div class="simulation-detail">
+        <div class="simulation-2rows"> {{simulation.chassis.body}} </div>
+        <div class="simulation-2rows"> {{simulation.chassis.front_wing}}</div>
+        <div class="simulation-2rows"> {{simulation.chassis.rear_wing}} </div>
+        <div class="simulation-2rows"> {{simulation.chassis.sidepod}} </div>
+        <div class="simulation-2rows"> {{simulation.chassis.diffuser}} </div>
+        <div class="simulation-2rows"> {{simulation.chassis.suspension}} </div>
+        <div class="simulation-2rows"> {{simulation.chassis.wheel_front}} </div>
+        <div class="simulation-2rows"> {{simulation.chassis.wheel_rear}} </div>
     </div>
 </div>
 
+
+<div>
+    <div class="simulation-title"> <h3>Overall</h3> </div>
+    <div class="simulation-detail">
+        <div class="simulation-2rows"> <b>Downforce</b> {{simulation.df.total}} </div>
+        <div class="simulation-2rows"> <b>Drag</b> {{simulation.drag.total}} </div>
+        <div class="simulation-2rows"> <b>Balance</b> {{simulation.balance}} </div>
+        <div class="simulation-2rows"> <b>Massflow</b> {{simulation.massflow}} </div>
+    </div>
+</div>
+
+
+<div>
+    <div class="simulation-title">
+        <h3>Downforce</h3>
+    </div>
+    <div class="simulation-detail">
+        <div class="simulation-2rows"> <b>U</b> {{simulation.df.body}} </div>
+        <div class="simulation-2rows"> <b>FW</b> {{simulation.df.front_wing}} </div>
+        <div class="simulation-2rows"> <b>RW</b> {{simulation.df.rear_wing}} </div>
+        <div class="simulation-2rows"> <b>S</b> {{simulation.df.sidepod}} </div>
+        <div class="simulation-2rows"> <b>D</b> {{simulation.df.diffuser}} </div>
+        <div class="simulation-2rows"> <b>SU</b> {{simulation.df.suspension}} </div>
+        <div class="simulation-2rows"> <b>Front Wheel</b> {{simulation.df.wheel_front}} </div>
+        <div class="simulation-2rows"> <b>Rear Wheel</b> {{simulation.df.wheel_rear}} </div>
+    </div>
+</div>
 
 <hr>
-<div class="simulation-title">
-    <h3>Drag</h3>
-</div>
-<div class="simulation-detail">
-    <div class="simulation-2rows">
-        <b>U</b>
-        {{simulation.drag.body}}
+
+<div>
+    <div class="simulation-title">
+        <h3>Drag</h3>
     </div>
-    <div class="simulation-2rows">
-        <b>FW</b>
-        {{simulation.drag.front_wing}}
-    </div>
-    <div class="simulation-2rows">
-        <b>RW</b>
-        {{simulation.drag.rear_wing}}
-    </div>
-    <div class="simulation-2rows">
-        <b>S</b>
-        {{simulation.drag.sidepod}}
-    </div>
-    <div class="simulation-2rows">
-        <b>D</b>
-        {{simulation.drag.diffuser}}
-    </div>
-    <div class="simulation-2rows">
-        <b>SU</b>
-        {{simulation.drag.suspension}}
-    </div>
-    <div class="simulation-2rows">
-        <b>Front Wheel</b>
-        {{simulation.drag.wheel_front}}
-    </div>
-    <div class="simulation-2rows">
-        <b>Rear Wheel</b>
-        {{simulation.drag.wheel_rear}}
+    <div class="simulation-detail">
+        <div class="simulation-2rows"> <b>U</b> {{simulation.drag.body}} </div>
+        <div class="simulation-2rows"> <b>FW</b> {{simulation.drag.front_wing}} </div>
+        <div class="simulation-2rows"> <b>RW</b> {{simulation.drag.rear_wing}} </div>
+        <div class="simulation-2rows"> <b>S</b> {{simulation.drag.sidepod}} </div>
+        <div class="simulation-2rows"> <b>D</b> {{simulation.drag.diffuser}} </div>
+        <div class="simulation-2rows"> <b>SU</b> {{simulation.drag.suspension}} </div>
+        <div class="simulation-2rows"> <b>Front Wheel</b> {{simulation.drag.wheel_front}} </div>
+        <div class="simulation-2rows"> <b>Rear Wheel</b> {{simulation.drag.wheel_rear}} </div>
     </div>
 </div>
 
