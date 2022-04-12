@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import Simulation, Type, Part, Force, Chassis #, SimulationMeta, FrontWing, RearWing, Diffuser, Sidepod, Suspension, Nose, Undertray, WheelRear, WheelFront
+from .models import Simulation, Type, State, Part, Force, Chassis #, SimulationMeta, FrontWing, RearWing, Diffuser, Sidepod, Suspension, Nose, Undertray, WheelRear, WheelFront
 
 admin.site.register(Simulation)
+admin.site.register(State)
 admin.site.register(Type)
 admin.site.register(Part)
 admin.site.register(Force)

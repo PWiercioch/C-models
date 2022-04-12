@@ -1,5 +1,5 @@
 from django import forms
-from .models import Simulation, Chassis, Force, Part, Type
+from .models import Simulation, State, Force, Part, Type
 from betterforms.multiform import MultiModelForm
 
 
@@ -70,6 +70,20 @@ class SimulationForm(forms.Form):
     massflow = forms.FloatField(required=False)
 
 
+class StateForm(forms.ModelForm):
+    state = forms.ChoiceField()
+
+    def __init__(self, *args, **kwargs):
+        super(StateForm, self).__init__(*args, **kwargs)
+        choices = State.objects.all()
+        self.fields['state'].choices = list(zip(iter(choices), iter(choices)))  # Creates list of doubled tuples from list
+
+
+    class Meta:
+        model = State
+        fields = ['state']
+
+
 class SimulationMultiForm(MultiModelForm):
 
     form_classes = {
@@ -77,6 +91,7 @@ class SimulationMultiForm(MultiModelForm):
         'chassis': ChassisMultiForm,
         'df': ForceForm,
         'drag': ForceForm,
+        'state': StateForm
     }
 
     def __init__(self, *args, **kwargs):

@@ -6,6 +6,7 @@ from django.http import request
 from django.views.generic import edit as edit
 from django.db.models import Q
 from django.core import serializers
+from copy import copy
 
 from django.core import serializers
 
@@ -13,7 +14,7 @@ from django.contrib.auth.views import LoginView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Simulation, Chassis, Part, Type
+from .models import Simulation, Chassis, Part, Type, Force
 
 from . import handle_uploaded_file
 
@@ -56,25 +57,6 @@ class SimulationList(ListView):
         return context
 
 
-class SimulationList2(LoginRequiredMixin, ListView):
-    model = Simulation
-    context_object_name = 'simulations'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['simulations'] = context['simulations'] #.filter(user=self.request.user) - to get the user simulations
-        # context['simulations'] = context['simulations'].filter(complete=False)
-        context['count'] = context['simulations'].count()
-
-        search_input = self.request.GET.get('search-area') or ''
-        if search_input:
-            context['simulations'] = context['simulations'].filter(title__startswith=search_input)
-
-        context['search_input'] = search_input
-
-        return context
-
-
 class SimulationDetail(LoginRequiredMixin, DetailView):
     model = Simulation
     def get_context_data(self, **kwargs):
@@ -95,18 +77,52 @@ class SimulationDelete(LoginRequiredMixin, DeleteView):
 
 class SimulationUpdate(LoginRequiredMixin, UpdateView):
     model = Simulation
-    fields = '__all__'
+    fields = ['main_v', 'sub_v', 'description', 'post_processing', 'state', 'parent']
     context_object_name = 'simulation'
     template_name = 'mastersheet/simulation_update.html'
     success_url = reverse_lazy('simulations')
 
+    forces = []
+
     def get_context_data(self, **kwargs):
-        # TODO get a submodel in the context - render in a template
-        body = Part.objects.get(id=self.object.chassis.body_id)
-        test = edit.model_forms.modelform_factory(Part, fields=['main_v', 'sub_v'])(**self.get_form_kwargs())
-        test.instance = body
         context = super(SimulationUpdate, self).get_context_data(**kwargs)
-        context['part_form'] = test
+        if self.request.method  == "GET":
+            forms = {}
+            forces = {}
+
+            forms['body'] = Part.objects.get(id=self.object.chassis.body_id)
+            forms['front_wing'] = Part.objects.get(id=self.object.chassis.front_wing_id)
+            forms['rear_wing'] = Part.objects.get(id=self.object.chassis.rear_wing_id)
+            forms['sidepod'] = Part.objects.get(id=self.object.chassis.sidepod_id)
+            forms['diffuser'] = Part.objects.get(id=self.object.chassis.diffuser_id)
+            forms['suspension'] = Part.objects.get(id=self.object.chassis.suspension_id)
+            forms['wheel_front'] = Part.objects.get(id=self.object.chassis.wheel_front_id)
+            forms['wheel_rear'] = Part.objects.get(id=self.object.chassis.wheel_rear_id)
+
+            forces['df'] = Force.objects.get(id=self.object.df_id)
+            forces['drag'] = Force.objects.get(id=self.object.drag_id)
+
+            # copy original object
+            object = copy(self.object)
+
+            for id, part in forms.items():
+                self.object = part
+                form = edit.model_forms.modelform_factory(Part, fields=['main_v', 'sub_v'])(**self.get_form_kwargs())
+                forms[id] = form
+
+            for id, force in forces.items():
+                self.object = force
+                form = edit.model_forms.modelform_factory(Force, fields='__all__')(**self.get_form_kwargs())
+                forces[id] = form
+
+            # Get the original object back
+            self.object = object
+
+            self.args = forms
+            self.forces = forces
+
+            context['sub_forms'] = self.args
+            context['forces'] = self.forces
         return context
 
     def form_valid(self, form):
@@ -228,9 +244,6 @@ class SimulationCreate(FormView):
                                 massflow=massflow,
                                 parent=parent)
         # TODO - handle user
-        # TODO - handle parent simulation
-        # TODO - better handle regexes
-        # TODO - add simulation state
         # TODO - add picture
 
         simulation.save()

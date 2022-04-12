@@ -13,6 +13,12 @@ class Type(models.Model):
     def __str__(self):
         return self.abbreviation
 
+class State(models.Model):
+    state = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.state
+
 
 class Part(models.Model):
     type = models.ForeignKey(Type, on_delete=models.CASCADE, blank=True, null=True)
@@ -62,6 +68,7 @@ class Simulation(models.Model):
     post_processing = models.CharField(max_length=500, null=True, blank=True)
     slug = models.SlugField(primary_key=True)
 
+    state = models.ForeignKey(State, on_delete=models.CASCADE, blank=True, null=True)
     df = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True, null=True, related_name='df')
     drag = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True, null=True, related_name='drag')
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
