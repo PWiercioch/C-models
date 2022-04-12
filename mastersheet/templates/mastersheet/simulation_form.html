@@ -5,6 +5,8 @@
     <a href="{% url 'simulations' %}">&#8592; Back</a>
 </div>
 
+{{ form.errors }}
+
 <div class="card-body">
 <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
@@ -22,12 +24,16 @@
                {{ form.simulation.post_processing }}
             </div>
             <div class="row">
+                <b>Report link</b>
+               {{ form.simulation.report }}
+            </div>
+            <div class="row">
                 <b></b>
                 <p><label><input type="checkbox" id="read" name="Read" onclick="hideContent()">Read from file</label></p>
             </div>
-            <div>
-                {{ form.state }}
-            </div>
+<!--            <div>-->
+<!--                {{ form.state }}-->
+<!--            </div>-->
         </div>
 
         <!--- TODO do it in a nice way - iterate over a form.chassis - maybe some vars in view.py??-->

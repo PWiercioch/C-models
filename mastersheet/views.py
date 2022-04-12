@@ -236,6 +236,7 @@ class SimulationCreate(FormView):
                                 sub_v=sim_version.group(4),
                                 description=form.data["simulation-description"],
                                 post_processing=form.data["simulation-post_processing"],
+                                report=form.data["simulation-report"],
                                 slug=sim_version.group(3).upper() + '-' + str(sim_version.group(4)),
                                 df=df_form,
                                 drag=drag_form,

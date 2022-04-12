@@ -66,6 +66,7 @@ class SimulationForm(forms.Form):
         attrs={'placeholder': 'C_X_XX', 'required': True, 'required pattern': '[cC]_[A-Za-z]{1}_\d+'}))
     description = forms.CharField(widget=forms.Textarea, required=False)
     post_processing = forms.CharField(max_length=500, required=False)
+    report = forms.CharField(max_length=500, required=False)
     balance = forms.FloatField(required=False)
     massflow = forms.FloatField(required=False)
 
@@ -91,7 +92,6 @@ class SimulationMultiForm(MultiModelForm):
         'chassis': ChassisMultiForm,
         'df': ForceForm,
         'drag': ForceForm,
-        'state': StateForm
     }
 
     def __init__(self, *args, **kwargs):
