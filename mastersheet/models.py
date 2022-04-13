@@ -69,11 +69,11 @@ class Simulation(models.Model):
     report = models.CharField(max_length=500, null=True, blank=True)
     slug = models.SlugField(primary_key=True)
 
-    state = models.ForeignKey(State, on_delete=models.CASCADE, blank=True, null=True)
-    df = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True, null=True, related_name='df')
-    drag = models.ForeignKey(Force, on_delete=models.CASCADE, blank=True, null=True, related_name='drag')
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
-    chassis = models.ForeignKey(Chassis, on_delete=models.CASCADE, null=True, blank=True)
+    state = models.ForeignKey(State, on_delete=models.SET_NULL, blank=True, null=True)
+    df = models.ForeignKey(Force, on_delete=models.SET_NULL, blank=True, null=True, related_name='df')
+    drag = models.ForeignKey(Force, on_delete=models.SET_NULL, blank=True, null=True, related_name='drag')
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
+    chassis = models.ForeignKey(Chassis, on_delete=models.SET_NULL, null=True, blank=True)
     balance = models.FloatField(blank=True, null=True)
     massflow = models.FloatField(blank=True, null=True)
 
