@@ -30,7 +30,7 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         return reverse_lazy('simulations')
 
-class SimulationList(ListView):
+class SimulationList(LoginRequiredMixin, ListView):
     template_name = 'mastersheet/simulation_list.html'
     model = Simulation
     context_object_name = 'simulations'
@@ -130,7 +130,7 @@ class SimulationUpdate(LoginRequiredMixin, UpdateView):
         return super(SimulationUpdate, self).form_valid(form)
 
 
-class SimulationCreate(FormView):
+class SimulationCreate(LoginRequiredMixin, FormView):
     context_object_name = 'simulation'
     form_class = SimulationMultiForm
     template_name = 'mastersheet/simulation_form.html'

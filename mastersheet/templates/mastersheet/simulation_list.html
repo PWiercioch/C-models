@@ -47,7 +47,7 @@
                 {% for simulation in simulations %}
                     <tr>
                         <td>
-                            <div class="simulation-icon"></div>
+<!--                            <div class="simulation-icon"></div>-->
                             <a href="{% url 'simulation'  simulation.slug %}">C_{{simulation}}</a>
                         </td>
                         <td>{{simulation.chassis.body}}</td>
